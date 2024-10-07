@@ -1,0 +1,44 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Laravel",
+            "type": "shell",
+            "command": "php artisan serve",
+            "hide": true,
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true,
+                "group": "serve"
+            }
+        },
+        {
+            "label": "Vite Server",
+            "type": "shell",
+            "command": "pnpm vite",
+            "hide": true,
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true,
+                "group": "serve"
+            }
+        },
+        {
+            "label": "Serve",
+            "dependsOn": [
+                "Laravel",
+                "Vite Server"
+            ],
+            "dependsOrder": "parallel",
+            "problemMatcher": []
+        }
+    ]
+}
