@@ -19,6 +19,7 @@
       </a>
       @auth
         <a class="text-blue-500" href="{{ route('logout') }}">Logout</a>
+        <a class="text-blue-500" href="{{ route('upload') }}">Upload</a>
       @else
         <a class="text-blue-500" href="{{ route('login') }}">Login</a>
         <a class="text-blue-500" href="{{ route('register') }}">Register</a>
