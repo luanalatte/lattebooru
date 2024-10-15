@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
@@ -14,6 +16,9 @@ class FileController extends Controller
             return null;
         }
 
+        $post = Post::where('md5', $hash)->firstOrFail();
+        Gate::authorize('view', $post);
+
         return Storage::get($path);
     }
 
@@ -24,6 +29,9 @@ class FileController extends Controller
         if (!Storage::exists($path)) {
             return null;
         }
+
+        $post = Post::where('md5', $hash)->firstOrFail();
+        Gate::authorize('view', $post);
 
         return Storage::get($path);
     }

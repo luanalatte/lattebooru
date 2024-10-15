@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PostVisibility;
 use App\Models\Post;
 use Exception;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
@@ -87,6 +89,18 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         //
+    }
+
+    public function setVisibility(Request $request, Post $post)
+    {
+        $request->validate([
+            'visibility' => ['required', Rule::in(PostVisibility::cases())]
+        ]);
+
+        $post->visibility = $request->integer('visibility');
+        $post->save();
+
+        return back();
     }
 
     public function destroy(Post $post)

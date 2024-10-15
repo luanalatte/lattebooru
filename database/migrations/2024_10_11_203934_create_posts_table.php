@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('width')->nullable();
             $table->unsignedSmallInteger('height')->nullable();
             $table->string('source')->nullable();
+            $table->unsignedTinyInteger('visibility')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
