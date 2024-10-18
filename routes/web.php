@@ -5,7 +5,9 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class);
@@ -28,6 +30,9 @@ Route::middleware('auth')->group(function () {
 Route::get('/post/{post}', [PostController::class, 'show'])->can('view', 'post')->name('post.show');
 Route::post('/post/{post}/setVisibility', [PostController::class, 'setVisibility'])->can('update', 'post')->name('post.setVisibility');
 Route::post('/post/{post}/delete', [PostController::class, 'destroy'])->can('delete', 'post')->name('post.delete');
+
+Route::get('/users', [UserController::class, 'index'])->can('viewAny', User::class)->name('users');
+Route::get('/user/{user}', [UserController::class, 'show'])->can('view', 'user')->name('user.show');
 
 Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function () {
     Route::get('_image/{hash}', [FileController::class, 'image'])->where('hash', '[0-9a-f]+')->name('_image');

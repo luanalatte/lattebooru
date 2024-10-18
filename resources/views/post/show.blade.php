@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layouts.app title="Post #{{ $post->id }}">
   <x-slot name="aside">
     <div class="space-y-3">
       <section class="space-y-3 rounded-md bg-white px-3 pb-4 pt-2 shadow-sm">
@@ -6,7 +6,7 @@
         <ul class="space-y-1 text-sm">
           <li>
             <span class="font-medium">Author:</span>
-            <a class="text-blue-500" href="#"><span>{{ $post->author->username }}</span></a>
+            <a class="text-blue-500" href="{{ route('user.show', [$post->author]) }}"><span>{{ $post->author->username }}</span></a>
           </li>
           <li>
             <span class="font-medium">Visibility:</span>

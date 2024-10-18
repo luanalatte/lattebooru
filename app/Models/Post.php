@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\PostVisibility;
 use App\Jobs\GenerateThumbnail;
+use App\Models\Scopes\VisibleScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,9 +31,19 @@ class Post extends Model
         'visibility' => PostVisibility::class
     ];
 
+    public static function booted()
+    {
+        static::addGlobalScope(new VisibleScope);
+    }
+
+    public function scopeVisibility(Builder $query, PostVisibility $visibility = PostVisibility::PUBLIC)
+    {
+        return $query->withoutGlobalScope(VisibleScope::class)->where('visibility', $visibility);
+    }
+
     public function scopePublic(Builder $query)
     {
-        return $query->where('visibility', PostVisibility::PUBLIC);
+        return $query->visibility(PostVisibility::PUBLIC);
     }
 
     public function regenerateThumbnail()
@@ -48,6 +59,16 @@ class Post extends Model
     public function getThumbnailPathAttribute()
     {
         return Storage::path("thumbs/$this->md5");
+    }
+
+    public function getIsPrivateAttribute()
+    {
+        return $this->visibility == PostVisibility::PRIVATE;
+    }
+
+    public function getIsHiddenAttribute()
+    {
+        return $this->visibility == PostVisibility::HIDDEN;
     }
 
     public function author()
