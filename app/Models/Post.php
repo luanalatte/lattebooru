@@ -71,6 +71,11 @@ class Post extends Model
         return $this->visibility == PostVisibility::HIDDEN;
     }
 
+    public function getIsPublicAttribute()
+    {
+        return $this->visibility == PostVisibility::PUBLIC;
+    }
+
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');

@@ -25,6 +25,7 @@ class RegisterController extends Controller
         ]);
 
         $user = User::create($validated);
+        $user->assignRole('user');
 
         event(new Registered($user));
 
