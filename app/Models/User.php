@@ -48,4 +48,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class, 'user_id')->latest();
     }
+
+    public function hasPermissionTo($permission, $guardName = null): bool
+    {
+        $permission = $this->filterPermission($permission, $guardName);
+        return $this->hasPermissionViaRole($permission);
+    }
 }
