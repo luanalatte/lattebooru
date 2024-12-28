@@ -1,3 +1,4 @@
+@vite('resources/js/post/post.js')
 <x-layouts.app title="Post #{{ $post->id }}">
   <x-slot name="aside">
     <div class="space-y-3">
@@ -60,7 +61,7 @@
     </div>
   </x-slot>
   <div class="rounded-md bg-white p-3 shadow-sm">
-    <img class="mx-auto rounded-md" loading="lazy" src="{{ route('_image', [$post->md5]) }}"
+    <img id="postImage" data-mode="fit" class="mx-auto rounded-md" loading="lazy" src="{{ route('_image', [$post->md5]) }}"
          alt="{{ $post->filename }}" title="{{ $post->filename }}">
   </div>
 </x-layouts.app>

@@ -14,3 +14,7 @@
     font-family: InterVariable, sans-serif;
   }
 }
+
+img[data-mode='fit'] {
+    max-height: calc(100vh - 200px);
+}
