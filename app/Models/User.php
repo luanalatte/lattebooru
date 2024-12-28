@@ -12,8 +12,6 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
 
-    protected $with = ['roles'];
-
     /**
      * The attributes that are mass assignable.
      *
@@ -48,7 +46,12 @@ class User extends Authenticatable
 
     public function posts()
     {
-        return $this->hasMany(Post::class, 'user_id')->latest();
+        return $this->hasMany(Post::class, 'user_id');
+    }
+
+    public function latestPosts()
+    {
+        return $this->posts()->latest();
     }
 
     public function hasPermissionTo($permission, $guardName = null): bool

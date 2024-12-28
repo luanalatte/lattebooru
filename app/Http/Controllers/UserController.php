@@ -10,7 +10,7 @@ class UserController extends Controller
     public function index()
     {
         return view('user.index', [
-            'users' => User::withCount('posts')->get()
+            'users' => User::with('roles')->withCount('posts')->get()
         ]);
     }
 

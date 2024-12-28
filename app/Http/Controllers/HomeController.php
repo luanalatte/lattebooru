@@ -9,7 +9,7 @@ class HomeController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $posts = Post::public()->take(10)->get();
+        $posts = Post::public()->take(10)->latest()->get();
         return view('home', [
             'posts' => $posts
         ]);
