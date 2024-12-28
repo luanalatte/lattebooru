@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         DB::transaction(function () {
             $this->call(RoleSeeder::class);
             $this->call(UserSeeder::class);
+            $this->call(TagSeeder::class);
             $this->call(PostSeeder::class);
         });
     }

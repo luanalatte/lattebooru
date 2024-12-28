@@ -1,13 +1,30 @@
 @vite('resources/js/post/post.js')
-<x-layouts.app title="Post #{{ $post->id }}">
+<x-layouts.app title="Post #{{ $post->id }}" nomenu>
   <x-slot name="aside">
     <div class="space-y-3">
+      @if ($post->tags->isNotEmpty())
+        <section class="space-y-3 rounded-md bg-white px-3 pb-4 pt-2 shadow-sm">
+          <h2 class="font-medium">Tags</h2>
+          <ul>
+            @foreach ($post->tags as $tag)
+              <li>
+                <a class="text-blue-500" href="{{ route('tag.show', [$tag->name]) }}">
+                  {{ $tag->name }}
+                </a>
+                <small class="text-gray-400">{{ $tag->posts_count }}</small>
+              </li>
+            @endforeach
+          </ul>
+        </section>
+      @endif
       <section class="space-y-3 rounded-md bg-white px-3 pb-4 pt-2 shadow-sm">
         <h2 class="font-medium">Details</h2>
         <ul class="space-y-1 text-sm">
           <li>
             <span class="font-medium">Author:</span>
-            <a class="text-blue-500" href="{{ route('user.show', [$post->author]) }}"><span>{{ $post->author->username }}</span></a>
+            <a class="text-blue-500" href="{{ route('user.show', [$post->author]) }}">
+              <span>{{ $post->author->username }}</span>
+            </a>
           </li>
           <li>
             <span class="font-medium">Visibility:</span>
@@ -60,8 +77,8 @@
       @endcanany
     </div>
   </x-slot>
-  <div class="rounded-md bg-white p-3 shadow-sm">
-    <img id="postImage" data-mode="fit" class="mx-auto rounded-md" loading="lazy" src="{{ route('_image', [$post->md5]) }}"
-         alt="{{ $post->filename }}" title="{{ $post->filename }}">
-  </div>
+  <section class="rounded-md bg-white p-3 shadow-sm">
+    <img class="mx-auto rounded-md" id="postImage" data-mode="fit" loading="lazy"
+         src="{{ route('_image', [$post->md5]) }}" alt="{{ $post->filename }}" title="{{ $post->filename }}">
+  </section>
 </x-layouts.app>

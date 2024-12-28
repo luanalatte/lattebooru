@@ -1,7 +1,4 @@
 <x-layouts.app title="Login">
-  <x-slot name="aside">
-    <x-menu/>
-  </x-slot>
   <section class="rounded-md bg-white px-4 pt-2 pb-4 shadow-sm">
     <h2 class="mb-2 text-lg">Login</h2>
     <form action="" method="POST">

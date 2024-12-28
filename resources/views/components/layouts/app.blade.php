@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ config('app.locale') }}">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
 
   <script defer src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
 </head>
+
 <body class="flex min-h-[100vh] flex-col bg-gray-100">
   <header class="bg-white shadow-sm">
     <div class="container mx-auto px-4 py-2">
@@ -33,13 +35,22 @@
   </header>
   <div @class([
       'container mx-auto px-4 pt-4 pb-8 flex-grow',
-      'grid grid-cols-[auto_1fr] gap-4' => isset($aside),
+      'grid grid-cols-[auto_1fr] gap-4',
   ])>
-    @isset($aside)
-      <aside {{ $aside->attributes->class(['min-w-[200px] rounded-md overflow-clip']) }}>
-        {{ $aside }}
-      </aside>
-    @endisset
+    <aside class="min-w-[200px] min-h-100vh rounded-md overflow-clip flex flex-col {{ isset($aside) ? $aside->attributes->get('class') : '' }}">
+      <div>
+        @if (!isset($nomenu))
+          <x-menu />
+        @endif
+        @isset($aside)
+          {{ $aside }}
+        @endisset
+      </div>
+      <a class="mt-auto flex w-full items-center gap-2 rounded-md px-4 py-2 text-gray-400" href="#">
+        <i class="iconify" data-icon="mdi-arrow-up"></i>
+        Back to the top
+      </a>
+    </aside>
     <main class="">
       {{ $slot }}
     </main>
@@ -51,4 +62,5 @@
     </div>
   </footer>
 </body>
+
 </html>

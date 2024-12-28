@@ -8,6 +8,6 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
-        return view('admin.index');
+        return view('not-implemented');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -10,8 +11,11 @@ class HomeController extends Controller
     public function __invoke(Request $request)
     {
         $posts = Post::public()->latest()->paginate(24);
+        $popularTags = Tag::popular()->take(12)->get();
+
         return view('home', [
-            'posts' => $posts
+            'posts' => $posts,
+            'popularTags' => $popularTags
         ]);
     }
 }

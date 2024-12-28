@@ -1,4 +1,4 @@
-<x-layouts.app title="Profile: {{ $user->username }}">
+<x-layouts.app title="Profile: {{ $user->username }}" nomenu>
   <x-slot name="aside">
     <section class="space-y-3 rounded-md bg-white px-3 pb-4 pt-2 shadow-sm">
       <h2 class="font-medium">{{ $user->username }}</h2>

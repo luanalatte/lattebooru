@@ -1,7 +1,4 @@
 <x-layouts.app title="Users">
-  <x-slot name="aside">
-    <x-menu />
-  </x-slot>
   <section class="rounded-md bg-white px-3 pb-4 pt-2 shadow-sm">
     <h2 class="mb-2 text-lg">Users</h2>
     <table class="mb-4">

@@ -1,4 +1,4 @@
-<nav class="flex h-full flex-col gap-3">
+<nav class="space-y-3">
   <a class="flex w-full items-center gap-2 rounded-md bg-white px-4 py-2 shadow-sm" href="/">
     <i class="iconify" data-icon="mdi-home"></i>
     Home
@@ -9,6 +9,10 @@
       Upload
     </a>
   @endcan
+  <a class="flex w-full items-center gap-2 rounded-md bg-white px-4 py-2 shadow-sm" href="{{ route('tags') }}">
+    <i class="iconify" data-icon="mdi-tag"></i>
+    Tags
+  </a>
   <a class="flex w-full items-center gap-2 rounded-md bg-white px-4 py-2 shadow-sm" href="{{ route('users') }}">
     <i class="iconify" data-icon="mdi-user"></i>
     Users
@@ -22,8 +26,4 @@
   <div class="mt-3">
     {{ $slot }}
   </div>
-  <a class="mt-auto flex w-full items-center gap-2 rounded-md px-4 py-2 text-gray-400" href="#">
-    <i class="iconify" data-icon="mdi-arrow-up"></i>
-    Back to the top
-  </a>
 </nav>

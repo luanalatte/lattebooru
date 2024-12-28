@@ -1,7 +1,4 @@
 <x-layouts.app title="Upload">
-  <x-slot name="aside">
-    <x-menu/>
-  </x-slot>
   <section class="rounded-md bg-white px-4 py-2 shadow-sm">
     <h2 class="mb-2 text-lg">Upload</h2>
     <form action="" method="post" enctype="multipart/form-data">
