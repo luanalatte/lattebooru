@@ -9,15 +9,20 @@ class UserController extends Controller
 {
     public function index()
     {
+        $users = User::with('roles')->withCount('posts')->paginate(50);
+
         return view('user.index', [
-            'users' => User::with('roles')->withCount('posts')->get()
+            'users' => $users
         ]);
     }
 
     public function show(User $user)
     {
+        $posts = $user->latestPosts()->paginate(12);
+
         return view('user.show', [
-            'user' => $user
+            'user' => $user,
+            'posts' => $posts
         ]);
     }
 }

@@ -13,14 +13,18 @@
         </li>
         <li>
           <span class="font-medium">Posts:</span>
-          <span>{{ $user->posts()->count() }}</span>
+          <span>{{ $posts->total() }}</span>
         </li>
       </ul>
     </section>
   </x-slot>
-  <section class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-    @foreach ($user->latestPosts as $post)
-      <x-thumbnail :$post/>
-    @endforeach
+  <section>
+    <div class="mb-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+      @foreach ($posts as $post)
+        <x-thumbnail :$post />
+      @endforeach
+    </div>
+
+    {{ $posts->links() }}
   </section>
 </x-layouts.app>

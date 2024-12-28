@@ -4,7 +4,7 @@
   </x-slot>
   <section class="rounded-md bg-white px-3 pb-4 pt-2 shadow-sm">
     <h2 class="mb-2 text-lg">Users</h2>
-    <table>
+    <table class="mb-4">
       <thead>
         <tr>
           <th class="px-2 font-normal">User</th>
@@ -26,5 +26,7 @@
         @endforeach
       </tbody>
     </table>
+
+    {{ $users->links() }}
   </section>
 </x-layouts.app>
