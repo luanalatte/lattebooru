@@ -13,7 +13,8 @@ class FileController extends Controller
         $path = "images/$hash";
 
         if (!Storage::exists($path)) {
-            return null;
+            $path = public_path('img/image.svg');
+            return response(file_get_contents($path))->header('Content-Type', mime_content_type($path));
         }
 
         $post = Post::where('md5', $hash)->firstOrFail();
@@ -27,7 +28,8 @@ class FileController extends Controller
         $path = "thumbs/$hash";
 
         if (!Storage::exists($path)) {
-            return null;
+            $path = public_path('img/thumbnail.svg');
+            return response(file_get_contents($path))->header('Content-Type', mime_content_type($path));
         }
 
         $post = Post::where('md5', $hash)->firstOrFail();
