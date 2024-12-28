@@ -26,7 +26,8 @@ class DatabaseSeeder extends Seeder
             'post_create',
             'post_delete_others',
             'post_force_delete',
-            'post_update_others'
+            'post_update_others',
+            'admin_panel',
         ];
 
         foreach ($permissions as $permission) {

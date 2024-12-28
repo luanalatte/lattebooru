@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\FileController;
@@ -32,6 +33,10 @@ Route::post('/post/{post}/delete', [PostController::class, 'destroy'])->can('del
 
 Route::get('/users', [UserController::class, 'index'])->name('users');
 Route::get('/user/{user}', [UserController::class, 'show'])->name('user.show');
+
+Route::middleware('can:admin_panel')->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+});
 
 Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function () {
     Route::get('_image/{hash}', [FileController::class, 'image'])->where('hash', '[0-9a-f]+')->name('_image');
