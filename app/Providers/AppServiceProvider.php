@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Post;
 use App\Models\Scopes\VisibleScope;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,10 @@ class AppServiceProvider extends ServiceProvider
             }
 
             return Password::min(8);
+        });
+
+        User::created(function ($user) {
+            $user->assignRole('user');
         });
 
         Route::bind('post', function ($value) {
