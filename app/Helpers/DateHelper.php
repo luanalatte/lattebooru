@@ -8,6 +8,10 @@ class DateHelper
 {
     public static function fuzzyDate($date)
     {
+        if ($date === null) {
+            return 'never';
+        }
+
         if (!$date instanceof Carbon) {
             $date = Carbon::parse($date);
         }
