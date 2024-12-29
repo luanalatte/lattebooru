@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\PostVisibility;
 use App\Models\Post;
-use App\Models\Tag;
+use App\Services\TagService;
 use Exception;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
@@ -87,7 +87,7 @@ class PostController extends Controller
         //
     }
 
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Post $post, TagService $tagService)
     {
         $validated = $request->validate([
             'tags' => ['array'],
@@ -95,22 +95,11 @@ class PostController extends Controller
         ]);
 
         if (isset($validated['tags'])) {
-            $validated['tags'] = array_map(fn ($tag) => strtolower(trim($tag)), $validated['tags']);
-
-            $existingTags = Tag::whereIn('name', array_keys($validated['tags']))->get()->keyBy->name;
-
-            $removeTags = [];
-            $addTags = [];
+            $removeTags = $tagService->findTags(array_keys(array_filter($validated['tags'], fn ($v) => !boolval($v), ARRAY_FILTER_USE_BOTH)));
 
             DB::beginTransaction();
             try {
-                foreach ($validated['tags'] as $tag => $v) {
-                    if (boolval($v)) {
-                        $addTags[] = $existingTags[$tag]?->id ?? Tag::create(['name' => $tag])->id;
-                    } elseif (isset($existingTags[$tag])) {
-                        $removeTags[] = $existingTags[$tag]->id;
-                    }
-                }
+                $addTags = $tagService->findOrCreateTags(array_keys(array_filter($validated['tags'], fn ($v) => boolval($v), ARRAY_FILTER_USE_BOTH)));
 
                 $post->tags()->detach($removeTags);
                 $post->tags()->syncWithoutDetaching($addTags);
@@ -118,7 +107,7 @@ class PostController extends Controller
                 DB::commit();
             } catch (Exception $e) {
                 DB::rollBack();
-                throw ($e);
+                throw($e);
             }
         }
 

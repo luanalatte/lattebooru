@@ -22,8 +22,8 @@ return new class extends Migration
 
         Schema::create('post_tag', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Post::class, 'post_id');
-            $table->foreignIdFor(Tag::class, 'tag_id');
+            $table->foreignIdFor(Post::class, 'post_id')->constrained();
+            $table->foreignIdFor(Tag::class, 'tag_id')->constrained()->cascadeOnDelete();
 
             $table->unique(['post_id', 'tag_id']);
         });
