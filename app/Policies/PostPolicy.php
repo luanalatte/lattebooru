@@ -43,6 +43,11 @@ class PostPolicy
         return $post->author->is($user) || $user->hasPermissionTo('post_update_others');
     }
 
+    public function editTags(User $user, Post $post): bool
+    {
+        return $post->author->is($user) || $user->hasPermissionTo('post_edit_tags');
+    }
+
     /**
      * Determine whether the user can delete the model.
      */

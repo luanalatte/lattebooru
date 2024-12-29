@@ -81,7 +81,9 @@
          x-bind:data-mode="fit ? 'fit' : 'full'" src="{{ route('_image', [$post->md5]) }}" alt="{{ $post->filename }}"
          title="{{ $post->filename }}">
   </section>
-  <section class="rounded-md bg-white p-3 shadow-sm">
-    <x-tags.tag-editor class="mx-auto max-w-[800px]" :$post />
-  </section>
+  @can('post_edit_tags', $post)
+    <section class="rounded-md bg-white p-3 shadow-sm">
+      <x-tags.tag-editor class="mx-auto max-w-[800px]" :$post />
+    </section>
+  @endcan
 </x-layouts.app>

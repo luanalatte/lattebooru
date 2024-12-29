@@ -9,15 +9,11 @@ use Exception;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
     public function create()
     {
         return view('post.upload');
@@ -82,37 +78,35 @@ class PostController extends Controller
         ]);
     }
 
-    public function edit(Post $post)
-    {
-        //
-    }
-
-    public function update(Request $request, Post $post, TagService $tagService)
+    public function updateTags(Request $request, Post $post, TagService $tagService)
     {
         $validated = $request->validate([
-            'tags' => ['array'],
-            'tags.*' => ['boolean']
+            'tags' => 'required|array',
+            'tags.*' => 'boolean'
         ]);
 
-        if (isset($validated['tags'])) {
-            $removeTags = $tagService->findTags(array_keys(array_filter($validated['tags'], fn ($v) => !boolval($v), ARRAY_FILTER_USE_BOTH)));
+        $removeTags = $tagService->findTags(array_keys(array_filter($validated['tags'], fn ($v) => !boolval($v), ARRAY_FILTER_USE_BOTH)));
 
-            DB::beginTransaction();
-            try {
+        DB::beginTransaction();
+        try {
+            if (Gate::allows('tag_create')) {
                 $addTags = $tagService->findOrCreateTags(array_keys(array_filter($validated['tags'], fn ($v) => boolval($v), ARRAY_FILTER_USE_BOTH)));
-
-                $post->tags()->detach($removeTags);
-                $post->tags()->syncWithoutDetaching($addTags);
-
-                DB::commit();
-            } catch (Exception $e) {
-                DB::rollBack();
-                throw($e);
+            } else {
+                $addTags = $tagService->findTags(array_keys(array_filter($validated['tags'], fn ($v) => boolval($v), ARRAY_FILTER_USE_BOTH)));
             }
+
+            $post->tags()->detach($removeTags);
+            $post->tags()->syncWithoutDetaching($addTags);
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw($e);
         }
 
-        return view('post.show', [
-            'post' => $post
+        return response()->json([
+            'message' => 'Tags updated succesfully.',
+            'tags' => $post->tags->fresh()->pluck('name')
         ]);
     }
 

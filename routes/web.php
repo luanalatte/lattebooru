@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/post/{post}', [PostController::class, 'show'])->can('view', 'post')->name('post.show');
 Route::post('/post/{post}', [PostController::class, 'update'])->can('update', 'post')->name('post.update');
+Route::post('/post/{post}/tags', [PostController::class, 'updateTags'])->can('post_edit_tags', 'post')->name('post.tags');
 Route::post('/post/{post}/setVisibility', [PostController::class, 'setVisibility'])->can('update', 'post')->name('post.setVisibility');
 Route::post('/post/{post}/delete', [PostController::class, 'destroy'])->can('delete', 'post')->name('post.delete');
 

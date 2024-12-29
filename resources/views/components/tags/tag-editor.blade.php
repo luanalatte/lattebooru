@@ -1,17 +1,30 @@
 @props(['post'])
 
-<div {{ $attributes }} x-data="{
-    edit: false,
-    tag: '',
-    @if ($post->tags->isNotEmpty()) tags: {{ Js::from($post->tags->mapWithKeys(fn($tag) => [$tag->name => 1])) }},
-    @else tags: {}, @endif
-}">
-  <form action="" method="post" x-ref="form">
-    @csrf
-    <template x-for="(visible, tag) in tags" x-bind:key="tag">
-      <input type="hidden" x-bind:name="`tags[${tag}]`" x-bind:value="visible">
-    </template>
-  </form>
+<div {{ $attributes }} x-data="data">
+  <script>
+    let data = {
+      edit: false,
+      message: null,
+      tag: '',
+      @if ($post->tags->isNotEmpty())
+        tags: {{ Js::from($post->tags->mapWithKeys(fn($tag) => [$tag->name => 1])) }},
+      @else
+        tags: {},
+      @endif
+      submitTags() {
+        return axios.post("{{ route('post.tags', [$post]) }}", {
+            tags: this.tags
+          })
+          .then(response => {
+            this.tags = Object.fromEntries(response.data.tags.map(tag => [tag, 1]));
+            this.edit = false;
+          })
+          .catch(error => {
+            console.log(error.message);
+          });
+      }
+    }
+  </script>
   <div class="flex flex-wrap justify-center gap-2">
     <template x-for="(visible, tag) in tags" x-bind:key="tag">
       <div class="flex h-8 items-center" x-show="visible">
@@ -41,7 +54,7 @@
         <span>Cancel</span>
       </button>
       <button class="flex items-center gap-1 rounded-md bg-lime-400 px-2 py-1 shadow-sm hover:bg-lime-500 hover:text-white"
-              type="button" x-on:click="$refs.form.submit();">
+              type="button" x-on:click="submitTags()">
         <i class="iconify" data-icon="mdi-tick"></i>
         <span>Confirm</span>
       </button>

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -26,6 +25,8 @@ class RoleSeeder extends Seeder
             'post_delete_others',
             'post_force_delete',
             'post_update_others',
+            'post_edit_tags',
+            'tag_create',
             'admin_panel',
         ];
 
@@ -37,6 +38,8 @@ class RoleSeeder extends Seeder
         $user->syncPermissions([
             'post_show_hidden',
             'post_create',
+            'post_edit_tags',
+            'tag_create',
         ]);
     }
 }
