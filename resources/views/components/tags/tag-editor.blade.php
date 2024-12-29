@@ -16,7 +16,7 @@
     <template x-for="(visible, tag) in tags" x-bind:key="tag">
       <div class="flex h-8 items-center" x-show="visible">
         <a class="text-blue-500" x-bind:href="`{{ route('tag.show', '') }}/${tag}`" x-text="tag" x-show="!edit"></a>
-        <button class="flex h-6 w-min items-center gap-1 rounded-sm bg-blue-400 pe-2 ps-1 shadow-sm hover:border-red-500 hover:bg-red-500 hover:text-white"
+        <button class="flex h-6 w-min items-center gap-1 whitespace-nowrap rounded-sm bg-blue-400 pe-2 ps-1 shadow-sm hover:border-red-500 hover:bg-red-500 hover:text-white"
                 x-on:click="if(edit) {tags[tag] = 0}" x-show="edit" type="button">
           <i class="iconify" data-icon="mdi-close" x-show="edit"></i>
           <span x-text="tag"></span>
