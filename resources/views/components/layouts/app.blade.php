@@ -12,7 +12,8 @@
 
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-  <script defer src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
 </head>
 
 <body class="flex min-h-[100vh] flex-col bg-gray-100">
