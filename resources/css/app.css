@@ -15,6 +15,10 @@
   }
 }
 
+form {
+    margin-bottom: 0;
+}
+
 img[data-mode='fit'] {
     max-height: calc(100vh - 200px);
 }

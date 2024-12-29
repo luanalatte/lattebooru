@@ -21,8 +21,11 @@ return new class extends Migration
         });
 
         Schema::create('post_tag', function (Blueprint $table) {
-            $table->foreignIdFor(Post::class);
-            $table->foreignIdFor(Tag::class);
+            $table->id();
+            $table->foreignIdFor(Post::class, 'post_id');
+            $table->foreignIdFor(Tag::class, 'tag_id');
+
+            $table->unique(['post_id', 'tag_id']);
         });
     }
 
