@@ -1,4 +1,3 @@
-@vite('resources/js/post/post.js')
 <x-layouts.app title="Post #{{ $post->id }}" nomenu>
   <x-slot name="aside">
     <div class="space-y-3">
@@ -78,8 +77,9 @@
     </div>
   </x-slot>
   <section class="rounded-md bg-white p-3 shadow-sm">
-    <img class="mx-auto rounded-md" id="postImage" data-mode="fit" loading="lazy"
-         src="{{ route('_image', [$post->md5]) }}" alt="{{ $post->filename }}" title="{{ $post->filename }}">
+    <img class="mx-auto rounded-md" data-mode='fit' x-data="{ fit: true }" loading="lazy" x-on:click="fit = !fit"
+         x-bind:data-mode="fit ? 'fit' : 'full'" src="{{ route('_image', [$post->md5]) }}" alt="{{ $post->filename }}"
+         title="{{ $post->filename }}">
   </section>
   <section class="rounded-md bg-white p-3 shadow-sm">
     <x-tags.tag-editor class="mx-auto max-w-[800px]" :$post />
