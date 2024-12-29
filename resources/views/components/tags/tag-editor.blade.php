@@ -1,7 +1,10 @@
+@props(['post'])
+
 <div {{ $attributes }} x-data="{
     edit: false,
     tag: '',
-    tags: {{ Js::from($post->tags->mapWithKeys(fn($tag) => [$tag->name => 1])) }},
+    @if ($post->tags->isNotEmpty()) tags: {{ Js::from($post->tags->mapWithKeys(fn($tag) => [$tag->name => 1])) }},
+    @else tags: {}, @endif
 }">
   <form action="" method="post" x-ref="form">
     @csrf
