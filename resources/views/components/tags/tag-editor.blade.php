@@ -1,8 +1,8 @@
 @props(['post'])
 
-<div {{ $attributes }} x-data="data">
+<div {{ $attributes }} x-data="tagEditorData">
   <script>
-    let data = {
+    let tagEditorData = {
       edit: false,
       message: null,
       tag: '',

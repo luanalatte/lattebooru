@@ -119,7 +119,10 @@ class PostController extends Controller
         $post->visibility = $request->integer('visibility');
         $post->save();
 
-        return back();
+        return response()->json([
+            'message' => 'Visibility changed',
+            'visibility' => $post->visibility
+        ]);
     }
 
     public function destroy(Post $post)
