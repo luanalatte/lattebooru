@@ -1,6 +1,6 @@
 @props(['post'])
 
-<a href="{{ route('post.show', [$post]) }}">
+<a title="{{ $post->tags->pluck('name')->implode(' ') }}" href="{{ route('post.show', [$post]) }}">
   <article class="relative aspect-square overflow-hidden rounded-md bg-white shadow-sm">
     <img @class(['h-full w-full object-contain']) loading="lazy" src="{{ route('_thumb', [$post->md5]) }}">
     <div class="absolute bottom-0 z-20 w-full p-2 text-lg text-gray-300">

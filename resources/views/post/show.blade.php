@@ -1,21 +1,17 @@
-<x-layouts.app title="Post #{{ $post->id }}" nomenu>
+<x-layouts.app title="Post #{{ $post->id }}" nomenu x-data="{ tags: {{ Js::from($tags) }}, visibility: {{ $post->visibility }}}">
   <x-slot name="aside">
-    <div class="space-y-3">
-      @if ($post->tags->isNotEmpty())
-        <section class="space-y-3 rounded-md bg-white px-3 pb-4 pt-2 shadow-sm">
-          <h2 class="font-medium">Tags</h2>
-          <ul>
-            @foreach ($post->tags as $tag)
-              <li>
-                <a class="text-blue-500" href="{{ route('tag.show', [$tag->name]) }}">
-                  {{ $tag->name }}
-                </a>
-                <small class="text-gray-400">{{ $tag->posts_count }}</small>
-              </li>
-            @endforeach
-          </ul>
-        </section>
-      @endif
+    <div class="flex flex-col gap-3">
+      <section class="space-y-3 rounded-md bg-white px-3 pb-4 pt-2 shadow-sm" x-show="Object.keys(tags).length > 0">
+        <h2 class="font-medium">Tags</h2>
+        <ul>
+          <template x-for="(data, tag) in tags" x-bind:key="tag">
+            <li>
+              <a class="text-blue-500" x-bind:href="`{{ route('tag.show', '') }}/${tag}`" x-text="tag"></a>
+              <small class="text-gray-400" x-text="data.count"></small>
+            </li>
+          </template>
+        </ul>
+      </section>
       <section class="space-y-3 rounded-md bg-white px-3 pb-4 pt-2 shadow-sm">
         <h2 class="font-medium">Details</h2>
         <ul class="space-y-1 text-sm">

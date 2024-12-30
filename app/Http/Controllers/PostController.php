@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Enums\PostVisibility;
 use App\Models\Post;
+use App\Services\PostService;
 use App\Services\TagService;
 use Exception;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class PostController extends Controller
@@ -73,30 +73,31 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
+        $tags = $post->tags->mapWithKeys(fn ($tag) => [$tag->name => [
+            'count' => $tag->posts_count
+        ]]);
+
         return view('post.show', [
-            'post' => $post
+            'post' => $post,
+            'tags' => $tags
         ]);
     }
 
-    public function updateTags(Request $request, Post $post, TagService $tagService)
+    public function updateTags(Request $request, Post $post, PostService $postService, TagService $tagService)
     {
         $validated = $request->validate([
             'tags' => 'required|array',
             'tags.*' => 'boolean'
         ]);
 
-        $removeTags = $tagService->findTags(array_keys(array_filter($validated['tags'], fn ($v) => !boolval($v), ARRAY_FILTER_USE_BOTH)));
+        $removeTags = $tagService->sanitizeMany(array_keys(array_filter($validated['tags'], fn ($v) => !boolval($v), ARRAY_FILTER_USE_BOTH)));
+        $addTags = $tagService->sanitizeMany(array_keys(array_filter($validated['tags'], fn ($v) => boolval($v), ARRAY_FILTER_USE_BOTH)));
 
         DB::beginTransaction();
         try {
-            if (Gate::allows('tag_create')) {
-                $addTags = $tagService->findOrCreateTags(array_keys(array_filter($validated['tags'], fn ($v) => boolval($v), ARRAY_FILTER_USE_BOTH)));
-            } else {
-                $addTags = $tagService->findTags(array_keys(array_filter($validated['tags'], fn ($v) => boolval($v), ARRAY_FILTER_USE_BOTH)));
-            }
 
-            $post->tags()->detach($removeTags);
-            $post->tags()->syncWithoutDetaching($addTags);
+            $postService->removeTags($post, $removeTags);
+            $postService->addTags($post, $addTags);
 
             DB::commit();
         } catch (Exception $e) {
@@ -104,9 +105,13 @@ class PostController extends Controller
             throw($e);
         }
 
+        $tags = $post->tags->fresh()->mapWithKeys(fn ($tag) => [$tag->name => [
+            'count' => $tag->posts_count
+        ]]);
+
         return response()->json([
             'message' => 'Tags updated succesfully.',
-            'tags' => $post->tags->fresh()->pluck('name')
+            'tags' => $tags
         ]);
     }
 

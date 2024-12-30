@@ -12,11 +12,10 @@
 
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <script defer src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
 </head>
 
-<body class="flex min-h-[100vh] flex-col bg-gray-100">
+<body {{ $attributes->except(['title', 'nomenu'])->class(['flex min-h-[100vh] flex-col bg-gray-100']) }}>
   <header class="bg-white shadow-sm">
     <div class="container mx-auto px-4 py-2">
       <div class="flex items-center justify-between gap-3">
@@ -34,11 +33,9 @@
       </div>
     </div>
   </header>
-  <div @class([
-      'container mx-auto px-4 pt-4 pb-8 flex-grow',
-      'grid grid-cols-[auto_1fr] gap-4',
-  ])>
-    <aside class="min-w-[200px] min-h-100vh rounded-md overflow-clip flex flex-col {{ isset($aside) ? $aside->attributes->get('class') : '' }}">
+  <div class="container mx-auto grid flex-grow grid-cols-[auto_1fr] gap-4 px-4 pb-8 pt-4">
+    <aside
+           class="{{ isset($aside) ? $aside->attributes->get('class') : '' }} min-h-100vh flex min-w-[200px] flex-col overflow-clip rounded-md">
       <div>
         @if (!isset($nomenu))
           <x-menu />

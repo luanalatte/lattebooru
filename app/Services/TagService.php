@@ -2,9 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Tag;
-use Illuminate\Support\Collection;
-
 class TagService
 {
     public function sanitize(string $tag)
@@ -16,24 +13,9 @@ class TagService
         return $tag;
     }
 
-    public function findTags(array $tags): Collection
+    /** @var string[] $tagNames */
+    public function sanitizeMany(array $tagNames)
     {
-        $tags = array_map(fn ($tag) => $this->sanitize($tag), $tags);
-        return Tag::whereIn('name', $tags)->get();
-    }
-
-    public function findOrCreateTags(array $tags): Collection
-    {
-        $tags = array_map(fn ($tag) => $this->sanitize($tag), $tags);
-        $tagModels = Tag::whereIn('name', $tags)->get();
-
-        $byName = $tagModels->keyBy->name;
-        foreach ($tags as $tag) {
-            if (!isset($byName[$tag])) {
-                $tagModels[] = Tag::create(['name' => $tag]);
-            }
-        }
-
-        return $tagModels;
+        return array_map(fn ($tag) => $this->sanitize($tag), $tagNames);
     }
 }

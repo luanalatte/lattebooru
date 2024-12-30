@@ -3,7 +3,6 @@
 <div class="text-sm" x-data="visibilityData">
   <script>
     let visibilityData = {
-      visibility: {{ $post->visibility }},
       submit() {
         return axios.post("{{ route('post.setVisibility', [$post]) }}", {
             visibility: this.visibility
