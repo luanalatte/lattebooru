@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Models\Post;
@@ -27,6 +28,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/upload', [PostController::class, 'create'])->can('create', Post::class)->name('upload');
     Route::post('/upload', [PostController::class, 'store'])->can('create', Post::class);
 });
+
+Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 Route::get('/post/{post}', [PostController::class, 'show'])->can('view', 'post')->name('post.show');
 Route::post('/post/{post}', [PostController::class, 'update'])->can('update', 'post')->name('post.update');

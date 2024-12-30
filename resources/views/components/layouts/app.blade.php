@@ -19,9 +19,13 @@
   <header class="bg-white shadow-sm">
     <div class="container mx-auto px-4 py-2">
       <div class="flex items-center justify-between gap-3">
-        <a href="/">
-          <h1 class="text-2xl font-semibold">{{ config('app.name') }}</h1>
-        </a>
+        <div class="flex gap-3">
+          <a href="/">
+            <h1 class="text-2xl font-semibold">{{ config('app.name') }}</h1>
+          </a>
+          <input class="rounded-md border px-2" type="search" placeholder="Search" form="search" name="q" value="{{ request()->query('q') }}">
+          <form id="search" action="{{ route('search') }}"></form>
+        </div>
         <nav class="flex gap-4">
           @auth
             <a class="text-blue-500 hover:text-blue-700" href="{{ route('logout') }}">Logout</a>
