@@ -8,7 +8,9 @@ class TagService
     {
         $tag = strtolower(trim($tag));
 
-        $tag = preg_replace('/\s+/', '_', $tag);
+        $tag = preg_replace('/\s/', '_', $tag);
+        $tag = preg_replace('/--+/', '-', $tag);
+        $tag = preg_replace('/__+/', '_', $tag);
 
         return $tag;
     }

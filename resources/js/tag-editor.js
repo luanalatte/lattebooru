@@ -9,7 +9,7 @@ window.tagEditorData = (updateTagsUrl) => {
       this.tempTags = Object.fromEntries(this.tags.map((tag) => [tag.name, 1]));
     },
     sanitizeTag(tag) {
-      return new String(tag).trim().toLowerCase().replace(/\s+/g, " ");
+      return new String(tag).trim().toLowerCase().replace(/\s/g, "_").replace(/--+/g, "-").replace(/__+/g, "_");
     },
     addTag(tag) {
       if (!this.edit) return;
@@ -32,7 +32,7 @@ window.tagEditorData = (updateTagsUrl) => {
       this.tempTags[tag] = 0;
     },
     cancelEditing() {
-        this.init();
+      this.init();
     },
     submitTags() {
       return axios
