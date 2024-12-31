@@ -80,7 +80,7 @@ class PostController extends Controller
         }]);
 
         return view('post.show', [
-            'post' => new PostResource($post)
+            'post' => $post
         ]);
     }
 

@@ -23,7 +23,8 @@
           <a href="/">
             <h1 class="text-2xl font-semibold">{{ config('app.name') }}</h1>
           </a>
-          <input class="rounded-md border px-2" type="search" placeholder="Search" form="search" name="q" value="{{ request()->query('q') }}">
+          <input class="rounded-md border px-2" type="search" placeholder="Search" form="search" name="q"
+                 value="{{ request()->query('q') }}">
           <form id="search" action="{{ route('search') }}"></form>
         </div>
         <nav class="flex gap-4">
