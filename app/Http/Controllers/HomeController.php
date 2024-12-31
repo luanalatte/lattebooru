@@ -12,7 +12,7 @@ class HomeController extends Controller
     public function __invoke(Request $request)
     {
         $posts = Post::with('tags')->public()->latest()->paginate(24);
-        $popularTags = Tag::popular()->withBasicInfo()->take(12)->get();
+        $popularTags = Tag::popular()->take(12)->get();
 
         return view('home', [
             'posts' => $posts,

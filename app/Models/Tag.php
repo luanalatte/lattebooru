@@ -17,11 +17,6 @@ class Tag extends Model
         'name',
     ];
 
-    public function scopeWithBasicInfo(Builder $query)
-    {
-        $query->select('tags.id', 'tags.name')->withCount('posts');
-    }
-
     public function scopePopular(Builder $query)
     {
         $query->orderBy('posts_count', 'desc');

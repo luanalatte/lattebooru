@@ -1,4 +1,4 @@
-<x-layouts.app title="Post #{{ $post->id }}" nonav x-data="{{ Js::from(new \App\Http\Resources\PostResource($post)) }}">
+<x-layouts.app title="Post #{{ $post->id }}" nonav x-data="{{ Js::from($post->toResource()) }}">
   <x-slot name="aside">
     <div class="flex flex-col gap-3">
       <x-sidebar-section title="Tags" x-show="Object.keys(tags).length > 0" x-cloak>

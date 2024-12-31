@@ -31,6 +31,9 @@ window.tagEditorData = (updateTagsUrl) => {
 
       this.tempTags[tag] = 0;
     },
+    cancelEditing() {
+        this.init();
+    },
     submitTags() {
       return axios
         .post(updateTagsUrl, {

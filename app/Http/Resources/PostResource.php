@@ -16,18 +16,16 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'author' => $this->user_id,
+            'author' => new UserResource($this->author),
             'hash' => $this->md5,
             'filename' => $this->filename,
             'filesize' => $this->filesize,
             'width' => $this->width,
             'height' => $this->height,
             'source' => $this->source,
-            'visibility' => [
-                'id' => $this->visibility,
-                'name' => $this->visibility->toString()
-            ],
-            'tags' => TagResource::collection($this->tags)
+            'created_at' => $this->created_at,
+            'visibility' => $this->visibility->toArray(),
+            'tags' => TagResource::collection($this->whenLoaded('tags'))
         ];
     }
 }

@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait HasVisibility
 {
+    public function initializeHasVisibility()
+    {
+        if (! isset($this->casts['visibility'])) {
+            $this->casts['visibility'] = PostVisibility::class;
+        }
+    }
+
     public static function booted()
     {
         static::addGlobalScope(new VisibleScope);

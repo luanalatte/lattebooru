@@ -6,6 +6,7 @@ use App\Enums\PostVisibility;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\TagResource;
 use App\Models\Post;
+use App\Repositories\PostRepository;
 use App\Services\PostService;
 use App\Services\TagService;
 use Exception;
@@ -73,11 +74,9 @@ class PostController extends Controller
         return redirect(route('post.show', [$post]));
     }
 
-    public function show(Post $post)
+    public function show(Post $post, PostRepository $repository)
     {
-        $post->load(['tags' => function ($query) {
-            $query->withBasicInfo();
-        }]);
+        $post = $repository->getPostWithRelations($post);
 
         return view('post.show', [
             'post' => $post
@@ -122,12 +121,12 @@ class PostController extends Controller
             'visibility' => ['required', Rule::in(PostVisibility::cases())]
         ]);
 
-        $post->visibility = $request->integer('visibility');
+        $post->visibility = PostVisibility::from($request->integer('visibility'));
         $post->save();
 
         return response()->json([
             'message' => 'Visibility changed',
-            'visibility' => $post->visibility
+            'visibility' => $post->visibility->toArray()
         ]);
     }
 

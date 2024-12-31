@@ -25,7 +25,7 @@
         </div>
       </form>
       <button class="flex items-center gap-1 rounded-md bg-red-400 px-2 py-1 shadow-sm hover:bg-red-500 hover:text-white"
-              x-on:click="edit = false" type="button">
+              x-on:click="cancelEditing()" type="button">
         <i class="iconify" data-icon="mdi-close"></i>
         <span>Cancel</span>
       </button>

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\PostVisibility;
+use App\Http\Resources\PostResource;
 use App\Jobs\GenerateThumbnail;
 use App\Models\Traits\HasVisibility;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,10 +26,6 @@ class Post extends Model
         'visibility'
     ];
 
-    protected $casts = [
-        'visibility' => PostVisibility::class
-    ];
-
     public function regenerateThumbnail()
     {
         GenerateThumbnail::dispatch($this->md5);
@@ -43,6 +39,11 @@ class Post extends Model
     public function getThumbnailPathAttribute()
     {
         return Storage::path("thumbs/$this->md5");
+    }
+
+    public function toResource()
+    {
+        return new PostResource($this);
     }
 
     public function author()
