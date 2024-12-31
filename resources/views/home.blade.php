@@ -1,10 +1,9 @@
 <x-layouts.app title="Home">
   <x-slot name="aside">
     @if ($popularTags->isNotEmpty())
-      <section class="space-y-3 rounded-md bg-white px-3 pb-4 pt-2 shadow-sm">
-        <h2 class="font-medium">Popular Tags</h2>
+      <x-sidebar-section title="Popular Tags">
         <x-tags.tag-list x-data="{ tags: {{ Js::from($popularTags) }} }" />
-      </section>
+      </x-sidebar-section>
     @endif
   </x-slot>
   <section>

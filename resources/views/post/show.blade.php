@@ -1,17 +1,14 @@
 <x-layouts.app title="Post #{{ $post->id }}" nonav x-data="{{ Js::from(new \App\Http\Resources\PostResource($post)) }}">
   <x-slot name="aside">
     <div class="flex flex-col gap-3">
-      <section class="space-y-3 rounded-md bg-white px-3 pb-4 pt-2 shadow-sm" x-show="Object.keys(tags).length > 0" x-cloak>
-        <h2 class="font-medium">Tags</h2>
+      <x-sidebar-section title="Tags" x-show="Object.keys(tags).length > 0" x-cloak>
         <x-tags.tag-list />
-      </section>
-      <section class="space-y-3 rounded-md bg-white px-3 pb-4 pt-2 shadow-sm">
-        <h2 class="font-medium">Details</h2>
+      </x-sidebar-section>
+      <x-sidebar-section title="Details">
         <x-post.post-details :$post />
-      </section>
+      </x-sidebar-section>
       @canany(['update', 'delete'], $post)
-        <section class="space-y-3 rounded-md bg-white px-3 pb-4 pt-2 shadow-sm">
-          <h2 class="font-medium">Actions</h2>
+        <x-sidebar-section title="Actions">
           @can('update', $post)
             <x-post.visibility-select :$post />
           @endcan
@@ -23,7 +20,7 @@
               </button>
             </form>
           @endcan
-        </section>
+        </x-sidebar-section>
       @endcanany
     </div>
   </x-slot>
