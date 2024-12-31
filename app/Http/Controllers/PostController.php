@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums\PostVisibility;
+use App\Http\Resources\PostResource;
+use App\Http\Resources\TagResource;
 use App\Models\Post;
 use App\Services\PostService;
 use App\Services\TagService;
@@ -73,13 +75,12 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        $tags = $post->tags->mapWithKeys(fn ($tag) => [$tag->name => [
-            'count' => $tag->posts_count
-        ]]);
+        $post->load(['tags' => function ($query) {
+            $query->withBasicInfo();
+        }]);
 
         return view('post.show', [
-            'post' => $post,
-            'tags' => $tags
+            'post' => new PostResource($post)
         ]);
     }
 
@@ -105,13 +106,13 @@ class PostController extends Controller
             throw($e);
         }
 
-        $tags = $post->tags->fresh()->mapWithKeys(fn ($tag) => [$tag->name => [
-            'count' => $tag->posts_count
-        ]]);
+        $post->load(['tags' => function ($query) {
+            $query->withBasicInfo();
+        }]);
 
         return response()->json([
             'message' => 'Tags updated succesfully.',
-            'tags' => $tags
+            'tags' => TagResource::collection($post->tags)
         ]);
     }
 

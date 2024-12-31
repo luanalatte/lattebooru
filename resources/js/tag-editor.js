@@ -6,7 +6,7 @@ window.tagEditorData = (updateTagsUrl) => {
     tempTags: {},
     init() {
       this.edit = false;
-      this.tempTags = Object.fromEntries(Object.keys(this.tags).map((tag) => [tag, 1]));
+      this.tempTags = Object.fromEntries(this.tags.map((tag) => [tag.name, 1]));
     },
     sanitizeTag(tag) {
       return new String(tag).trim().toLowerCase().replace(/\s+/g, " ");
