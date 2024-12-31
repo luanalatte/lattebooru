@@ -15,10 +15,10 @@
     </template>
   </div>
   <div class="mt-4 h-8">
-    <div class="flex h-full w-full gap-3" x-show="edit" style="display: none;">
-      <form class="flex-grow" x-on:submit.prevent="addTag(tag); tag = '';">
+    <div class="flex h-full w-full gap-3" x-show="edit" x-cloak>
+      <form class="flex-grow" x-on:submit.prevent="addTag($refs.taginput.value); $refs.taginput.value = '';">
         <div class="flex h-full items-center overflow-hidden rounded-md border p-0 shadow-sm">
-          <input class="w-full px-2" type="text" placeholder="Add a tag" x-model="tag" x-ref="taginput">
+          <input class="w-full px-2" type="text" placeholder="Add a tag" x-ref="taginput">
           <button class="px-2" type="submit">
             <i class="iconify" data-icon="mdi-plus"></i>
           </button>

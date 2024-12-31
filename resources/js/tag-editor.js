@@ -2,7 +2,6 @@ window.tagEditorData = (updateTagsUrl) => {
   return {
     edit: false,
     message: null,
-    tag: "",
     tempTags: {},
     init() {
       this.edit = false;
