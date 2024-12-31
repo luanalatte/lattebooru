@@ -1,4 +1,4 @@
-<x-layouts.app title="Post #{{ $post->id }}" nomenu x-data="{ tags: {{ Js::from($tags) }}, visibility: {{ $post->visibility }}}">
+<x-layouts.app title="Post #{{ $post->id }}" nonav x-data="{ tags: {{ Js::from($tags) }}, visibility: {{ $post->visibility }}}">
   <x-slot name="aside">
     <div class="flex flex-col gap-3">
       <section class="space-y-3 rounded-md bg-white px-3 pb-4 pt-2 shadow-sm" x-show="Object.keys(tags).length > 0">
@@ -14,33 +14,7 @@
       </section>
       <section class="space-y-3 rounded-md bg-white px-3 pb-4 pt-2 shadow-sm">
         <h2 class="font-medium">Details</h2>
-        <ul class="space-y-1 text-sm">
-          <li>
-            <span class="font-medium">Author:</span>
-            <a class="text-blue-500" href="{{ route('user.show', [$post->author]) }}">
-              <span>{{ $post->author->username }}</span>
-            </a>
-          </li>
-          <li>
-            <span class="font-medium">Visibility:</span>
-            <span>{{ $post->visibility->toString() }}</span>
-          </li>
-          <li>
-            <span class="font-medium">Date:</span>
-            <span>{{ $post->created_at->format('d/m/Y') }}</span>
-          </li>
-          <li>
-            <span class="font-medium">Dimensions:</span>
-            <span>{{ $post->width }}</span>
-            x
-            <span>{{ $post->height }}</span>
-          </li>
-          <li>
-            <span class="font-medium">Size & Format:</span>
-            <span>{{ Number::fileSize($post->filesize) }}</span>
-            <span class="uppercase">{{ $post->ext }}</span>
-          </li>
-        </ul>
+        <x-post.post-details :$post />
       </section>
       @canany(['update', 'delete'], $post)
         <section class="space-y-3 rounded-md bg-white px-3 pb-4 pt-2 shadow-sm">

@@ -15,6 +15,10 @@
   }
 }
 
+[x-cloak] {
+    display: none;
+}
+
 form {
     margin-bottom: 0;
 }

@@ -15,7 +15,7 @@
   <script defer src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
 </head>
 
-<body {{ $attributes->except(['title', 'nomenu'])->class(['flex min-h-[100vh] flex-col bg-gray-100']) }}>
+<body {{ $attributes->except(['title', 'nonav'])->class(['flex min-h-[100vh] flex-col bg-gray-100']) }}>
   <header class="bg-white shadow-sm">
     <div class="container mx-auto px-4 py-2">
       <div class="flex items-center justify-between gap-3">
@@ -41,8 +41,8 @@
     <aside
            class="{{ isset($aside) ? $aside->attributes->get('class') : '' }} min-h-100vh flex min-w-[200px] flex-col overflow-clip rounded-md">
       <div>
-        @if (!isset($nomenu))
-          <x-menu />
+        @if (!isset($nonav))
+          <x-nav />
         @endif
         @isset($aside)
           {{ $aside }}

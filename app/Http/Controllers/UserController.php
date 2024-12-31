@@ -18,7 +18,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $posts = $user->latestPosts()->paginate(12);
+        $posts = $user->latestPosts()->with('tags')->paginate(12);
 
         return view('user.show', [
             'user' => $user,
