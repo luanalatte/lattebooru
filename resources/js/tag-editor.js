@@ -1,5 +1,5 @@
-window.tagEditorData = (updateTagsUrl) => {
-  return {
+document.addEventListener("alpine:init", () => {
+  Alpine.data("tagEditor", (submitUrl) => ({
     edit: false,
     message: null,
     tempTags: {},
@@ -35,7 +35,7 @@ window.tagEditorData = (updateTagsUrl) => {
     },
     submitTags() {
       return axios
-        .post(updateTagsUrl, {
+        .post(submitUrl, {
           tags: this.tempTags,
         })
         .then((response) => {
@@ -46,5 +46,5 @@ window.tagEditorData = (updateTagsUrl) => {
           console.log(error.message);
         });
     },
-  };
-};
+  }));
+});

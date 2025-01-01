@@ -1,7 +1,7 @@
 @props(['post'])
 @vite('resources/js/tag-editor.js')
 
-<div {{ $attributes }} x-data="tagEditorData('{{ route('post.tags', [$post]) }}')">
+<div {{ $attributes }} x-data="tagEditor('{{ route('post.tags', [$post]) }}')">
   <div class="flex flex-wrap justify-center gap-2">
     <template x-for="(visible, tag) in tempTags" x-bind:key="tag">
       <div class="flex h-8 items-center" x-show="visible">

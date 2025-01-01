@@ -105,9 +105,7 @@ class PostController extends Controller
             throw($e);
         }
 
-        $post->load(['tags' => function ($query) {
-            $query->withBasicInfo();
-        }]);
+        $post->load('tags');
 
         return response()->json([
             'message' => 'Tags updated succesfully.',

@@ -1,3 +1,5 @@
+@vite('resources/js/post.js')
+
 <x-layouts.app title="Post #{{ $post->id }}" nonav x-data="{{ Js::from($post->toResource()) }}">
   <x-slot name="aside">
     <div class="flex flex-col gap-3">
