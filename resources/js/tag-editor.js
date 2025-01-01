@@ -43,7 +43,7 @@ document.addEventListener("alpine:init", () => {
           this.init();
         })
         .catch((error) => {
-          console.log(error.message);
+          this.$store.toast.addToast(error.response?.data?.message ?? error.message, "error");
         });
     },
   }));

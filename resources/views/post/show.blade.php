@@ -1,6 +1,6 @@
-@vite('resources/js/post.js')
-
 <x-layouts.app title="Post #{{ $post->id }}" nonav x-data="{{ Js::from($post->toResource()) }}">
+  @vite('resources/js/post.js')
+
   <x-slot name="aside">
     <div class="flex flex-col gap-3">
       <x-sidebar-section title="Tags" x-show="Object.keys(tags).length > 0" x-cloak>

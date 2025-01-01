@@ -7,9 +7,10 @@ document.addEventListener("alpine:init", () => {
         })
         .then((response) => {
           this.visibility = response.data.visibility;
+          this.$store.toast.addToast("Visibility changed to " + this.visibility.name);
         })
         .catch((error) => {
-          console.log(error.message);
+          this.$store.toast.addToast(error.response?.data?.message ?? error.message, "error");
         });
     },
   }));
