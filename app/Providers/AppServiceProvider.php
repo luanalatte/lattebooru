@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Scopes\VisibleScope;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -29,6 +30,10 @@ class AppServiceProvider extends ServiceProvider
         if (app()->isLocal()) {
             Model::preventLazyLoading();
         }
+
+        Relation::morphMap([
+            'post' => 'App\Models\Post',
+        ]);
 
         Password::defaults(function () {
             if (app()->isProduction()) {

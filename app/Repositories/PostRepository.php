@@ -10,7 +10,8 @@ class PostRepository
     {
         return $post->load([
             'tags',
-            'author'
+            'author',
+            'comments.author'
         ]);
     }
 }

@@ -83,6 +83,25 @@ class PostController extends Controller
         ]);
     }
 
+    public function addComment(Post $post, Request $request)
+    {
+        $request->validate([
+            'comment' => 'required|string'
+        ]);
+
+        $comment = $post->comments()->create([
+            'user_id' => $request->user()->id,
+            'text' => $request->string('comment')
+        ]);
+
+        $comment->load('author');
+
+        return response()->json([
+            'message' => 'Comment added.',
+            'comment' => $comment
+        ]);
+    }
+
     public function updateTags(Request $request, Post $post, PostService $postService, TagService $tagService)
     {
         $validated = $request->validate([

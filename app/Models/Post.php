@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Http\Resources\PostResource;
 use App\Jobs\GenerateThumbnail;
+use App\Models\Traits\Commentable;
 use App\Models\Traits\HasVisibility;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
-    use HasFactory, SoftDeletes, HasVisibility;
+    use HasFactory, SoftDeletes, HasVisibility, Commentable;
 
     protected $fillable = [
         'user_id',
