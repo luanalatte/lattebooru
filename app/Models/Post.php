@@ -16,7 +16,6 @@ class Post extends Model
     use HasFactory, SoftDeletes, HasVisibility, Commentable;
 
     protected $fillable = [
-        'user_id',
         'md5',
         'ext',
         'filename',

@@ -3,16 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Enums\PostVisibility;
-use App\Http\Resources\PostResource;
 use App\Http\Resources\TagResource;
 use App\Models\Post;
-use App\Repositories\PostRepository;
 use App\Services\PostService;
 use App\Services\TagService;
+use App\Validation\Rules\UniqueFileHash;
 use Exception;
-use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class PostController extends Controller
@@ -25,7 +24,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|image'
+            'file' => ['bail', 'required', 'image', new UniqueFileHash],
         ]);
 
         $file = $request->file('file');
@@ -44,8 +43,7 @@ class PostController extends Controller
 
         try {
             /** @var Post $post */
-            $post = Post::create([
-                'user_id' => $request->user()->id,
+            $post = $request->user()->posts()->create([
                 'md5' => $hash,
                 'ext' => $ext,
                 'filename' => e($file->getClientOriginalName()),
@@ -57,13 +55,10 @@ class PostController extends Controller
             $file->storePubliclyAs('images', $hash);
 
             DB::commit();
-        } catch (UniqueConstraintViolationException) {
-            return back()->withErrors([
-                'upload' => trans('upload.duplicate')
-            ]);
         } catch (Exception $e) {
             DB::rollBack();
             report($e);
+
             return back()->withErrors([
                 'upload' => trans('upload.error')
             ]);
@@ -74,9 +69,9 @@ class PostController extends Controller
         return redirect(route('post.show', [$post]));
     }
 
-    public function show(Post $post, PostRepository $repository)
+    public function show(Post $post)
     {
-        $post = $repository->getPostWithRelations($post);
+        $post->load(['tags', 'author', 'comments.author']);
 
         return view('post.show', [
             'post' => $post
