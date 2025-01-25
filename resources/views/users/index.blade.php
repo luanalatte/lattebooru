@@ -14,7 +14,7 @@
       <tbody>
         @foreach ($users as $user)
           <tr>
-            <td class="px-2"><a class="text-blue-500" href="{{ route('user.show', [$user]) }}">{{ $user->username }}</a></td>
+            <td class="px-2"><a class="text-blue-500" href="{{ route('users.show', [$user]) }}">{{ $user->username }}</a></td>
             <td class="px-2 capitalize">{{ $user->roles->first()->name }}</td>
             <td class="px-2">{{ $user->posts_count }}</td>
             <td class="px-2">{{ $user->created_at->toFormattedDateString() }}</td>

@@ -1,7 +1,7 @@
 <x-layouts.app title="Upload">
   <section class="rounded-md bg-white px-4 py-2 shadow-sm">
     <h2 class="mb-2 text-lg">Upload</h2>
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data">
       @csrf
       <div class="max-w-[400px] space-y-2 mb-2">
         <div class="grid">

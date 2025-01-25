@@ -11,7 +11,7 @@ class UserController extends Controller
     {
         $users = User::with('roles')->withCount('posts')->paginate(50);
 
-        return view('user.index', [
+        return view('users.index', [
             'users' => $users
         ]);
     }
@@ -20,7 +20,7 @@ class UserController extends Controller
     {
         $posts = $user->latestPosts()->with('tags')->paginate(12);
 
-        return view('user.show', [
+        return view('users.show', [
             'user' => $user,
             'posts' => $posts
         ]);

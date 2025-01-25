@@ -15,8 +15,9 @@
             <x-post.visibility-select :$post />
           @endcan
           @can('delete', $post)
-            <form action="{{ route('post.delete', [$post]) }}" method="post">
+            <form action="{{ route('posts.destroy', [$post]) }}" method="post">
               @csrf
+              @method('delete')
               <button class="text-center font-medium text-red-500" type="submit">
                 <i class="iconify inline" data-icon="mdi-delete"></i> Delete
               </button>

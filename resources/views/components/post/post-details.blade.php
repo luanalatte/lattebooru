@@ -3,7 +3,7 @@
 <ul class="space-y-1 text-sm">
   <li>
     <span class="font-medium">Author:</span>
-    <a class="text-blue-500" href="{{ route('user.show', [$post->author]) }}">
+    <a class="text-blue-500" href="{{ route('users.show', [$post->author]) }}">
       <span>{{ $post->author->username }}</span>
     </a>
   </li>

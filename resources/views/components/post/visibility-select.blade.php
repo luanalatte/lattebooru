@@ -1,6 +1,6 @@
 @props(['post'])
 
-<div class="text-sm" x-data="visibilitySelect('{{ route('post.setVisibility', [$post]) }}')">
+<div class="text-sm" x-data="visibilitySelect('{{ route('posts.setVisibility', [$post]) }}')">
   <label class="mb-1 block">Visibility</label>
   <select class="w-full rounded-md border bg-transparent px-4 py-2" x-on:change="submit" x-model="visibility.id">
     @foreach (App\Enums\PostVisibility::cases() as $item)

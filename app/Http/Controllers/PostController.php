@@ -18,11 +18,15 @@ class PostController extends Controller
 {
     public function create()
     {
-        return view('post.upload');
+        Gate::authorize('create', Post::class);
+
+        return view('posts.create');
     }
 
     public function store(Request $request)
     {
+        Gate::authorize('create', Post::class);
+
         $request->validate([
             'file' => ['bail', 'required', 'image', new UniqueFileHash],
         ]);
@@ -66,20 +70,24 @@ class PostController extends Controller
 
         $post->regenerateThumbnail();
 
-        return redirect(route('post.show', [$post]));
+        return redirect(route('posts.show', [$post]));
     }
 
     public function show(Post $post)
     {
+        Gate::authorize('view', $post);
+
         $post->load(['tags', 'author', 'comments.author']);
 
-        return view('post.show', [
+        return view('posts.show', [
             'post' => $post
         ]);
     }
 
     public function addComment(Post $post, Request $request)
     {
+        Gate::authorize('comment', $post);
+
         $request->validate([
             'comment' => 'required|string'
         ]);
@@ -99,13 +107,15 @@ class PostController extends Controller
 
     public function updateTags(Request $request, Post $post, PostService $postService, TagService $tagService)
     {
+        Gate::authorize('editTags', $post);
+
         $validated = $request->validate([
             'tags' => 'required|array',
             'tags.*' => 'boolean'
         ]);
 
-        $removeTags = $tagService->sanitizeMany(array_keys(array_filter($validated['tags'], fn ($v) => !boolval($v), ARRAY_FILTER_USE_BOTH)));
-        $addTags = $tagService->sanitizeMany(array_keys(array_filter($validated['tags'], fn ($v) => boolval($v), ARRAY_FILTER_USE_BOTH)));
+        $removeTags = $tagService->sanitizeMany(array_keys(array_filter($validated['tags'], fn($v) => !boolval($v), ARRAY_FILTER_USE_BOTH)));
+        $addTags = $tagService->sanitizeMany(array_keys(array_filter($validated['tags'], fn($v) => boolval($v), ARRAY_FILTER_USE_BOTH)));
 
         DB::beginTransaction();
         try {
@@ -116,7 +126,7 @@ class PostController extends Controller
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            throw($e);
+            throw ($e);
         }
 
         $post->load('tags');
@@ -129,6 +139,8 @@ class PostController extends Controller
 
     public function setVisibility(Request $request, Post $post)
     {
+        Gate::authorize('update', $post);
+
         $request->validate([
             'visibility' => ['required', Rule::in(PostVisibility::cases())]
         ]);
@@ -144,6 +156,8 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
+        Gate::authorize('delete', $post);
+
         $post->delete();
 
         return redirect('/');
