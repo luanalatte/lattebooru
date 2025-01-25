@@ -3,8 +3,8 @@
 
   <x-slot name="aside">
     <div class="flex flex-col gap-3">
-      <x-sidebar-section title="Tags" x-show="Object.keys(tags).length > 0" x-cloak>
-        <x-tags.tag-list />
+      <x-sidebar-section title="Tags" x-show="Object.keys(tags).length > 0" :cloak="$post->tags->isEmpty()">
+        <x-tags.tag-list :tags="$post->tags" />
       </x-sidebar-section>
       <x-sidebar-section title="Details">
         <x-post.post-details :$post />

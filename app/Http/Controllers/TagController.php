@@ -11,7 +11,7 @@ class TagController extends Controller
         return view('not-implemented');
     }
 
-    public function show()
+    public function show(string $tag)
     {
         return view('not-implemented');
     }
