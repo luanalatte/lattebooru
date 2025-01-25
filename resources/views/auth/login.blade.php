@@ -23,7 +23,7 @@
           </label>
         </div>
         <div>
-          <button class="w-full rounded bg-blue-500 px-3 py-1" type="submit">Login</button>
+          <button class="w-full btn-blue" type="submit">Login</button>
         </div>
       </div>
     </form>

@@ -24,18 +24,18 @@
           </button>
         </div>
       </form>
-      <button class="flex items-center gap-1 rounded-md bg-red-400 px-2 py-1 shadow-sm hover:bg-red-500 hover:text-white"
+      <button class="btn-red"
               x-on:click="cancelEditing()" type="button">
         <i class="iconify" data-icon="mdi-close"></i>
         <span>Cancel</span>
       </button>
-      <button class="flex items-center gap-1 rounded-md bg-lime-400 px-2 py-1 shadow-sm hover:bg-lime-500 hover:text-white"
+      <button class="btn-lime"
               type="button" x-on:click="submitTags()">
         <i class="iconify" data-icon="mdi-tick"></i>
         <span>Confirm</span>
       </button>
     </div>
-    <button class="ms-auto flex items-center gap-1 rounded-md bg-blue-400 px-2 py-1 shadow-sm hover:bg-blue-500 hover:text-white"
+    <button class="ms-auto btn-blue"
             x-show="!edit" x-on:click="edit = true;  window.setTimeout(() => $refs.taginput.focus(), 0);"
             type="button">
       <i class="iconify" data-icon="mdi-pencil"></i>

@@ -32,7 +32,7 @@
         @enderror
       </div>
       <div>
-        <button class="w-full rounded bg-blue-500 px-3 py-1" type="submit">Create Account</button>
+        <button class="w-full btn-blue" type="submit">Create Account</button>
       </div>
     </div>
   </form>
