@@ -8,7 +8,7 @@
         <a class="text-blue-500" x-bind:href="`{{ route('tags.show', '') }}/${tag}`" x-text="tag" x-show="!edit"></a>
         <button class="flex h-6 w-min items-center gap-1 whitespace-nowrap rounded-sm bg-blue-400 pe-2 ps-1 shadow-sm hover:border-red-500 hover:bg-red-500 hover:text-white"
                 x-on:click="removeTag(tag)" x-show="edit" type="button">
-          <i class="iconify" data-icon="mdi-close" x-show="edit"></i>
+          <x-icon name="mdi:close" x-show="edit"/>
           <span x-text="tag"></span>
         </button>
       </div>
@@ -20,25 +20,25 @@
         <div class="flex h-full items-center overflow-hidden rounded-md border p-0 shadow-sm">
           <input class="w-full px-2" type="text" placeholder="Add a tag" x-ref="taginput">
           <button class="px-2" type="submit">
-            <i class="iconify" data-icon="mdi-plus"></i>
+            <x-icon name="mdi:plus"/>
           </button>
         </div>
       </form>
       <button class="btn-red"
               x-on:click="cancelEditing()" type="button">
-        <i class="iconify" data-icon="mdi-close"></i>
+        <x-icon name="mdi:close"/>
         <span>Cancel</span>
       </button>
       <button class="btn-lime"
               type="button" x-on:click="submitTags()">
-        <i class="iconify" data-icon="mdi-tick"></i>
+        <x-icon name="mdi:check"/>
         <span>Confirm</span>
       </button>
     </div>
     <button class="ms-auto btn-blue"
             x-show="!edit" x-on:click="edit = true;  window.setTimeout(() => $refs.taginput.focus(), 0);"
             type="button">
-      <i class="iconify" data-icon="mdi-pencil"></i>
+      <x-icon name="mdi:pencil"/>
       <span>Edit Tags</span>
     </button>
   </div>

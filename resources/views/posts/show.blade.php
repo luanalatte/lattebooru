@@ -18,8 +18,8 @@
             <form action="{{ route('posts.destroy', [$post]) }}" method="post">
               @csrf
               @method('delete')
-              <button class="text-center font-medium text-red-500" type="submit">
-                <i class="iconify inline" data-icon="mdi-delete"></i> Delete
+              <button class="flex items-center gap-1 font-medium text-red-500" type="submit">
+                <x-icon name="mdi:delete" /> Delete
               </button>
             </form>
           @endcan

@@ -6,7 +6,7 @@
              x-bind:data-type="toast.type" x-on:click="removeToast(id)">
           <div class="gap- flex items-center justify-between">
             <span x-text="toast.message"></span>
-            <i class="iconify" data-icon="mdi-close"></i>
+            <x-icon name="mdi:close"/>
           </div>
         </div>
       </template>

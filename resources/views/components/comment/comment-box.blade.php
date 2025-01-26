@@ -6,7 +6,7 @@
     <textarea class="w-full resize-none rounded-md border p-2" placeholder="Add a comment" rows="4" x-model="text"></textarea>
     <button class="ms-auto mt-2 btn-blue"
             type="submit">
-      <i class="iconify" data-icon="mdi-comment"></i>
+      <x-icon name="mdi:comment"/>
       Comment
     </button>
   </form>

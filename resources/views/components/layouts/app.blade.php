@@ -11,8 +11,6 @@
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
   @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-  <script defer src="https://code.iconify.design/1/1.0.6/iconify.min.js"></script>
 </head>
 
 <body {{ $attributes->except(['title', 'nonav'])->class(['flex min-h-[100vh] flex-col bg-gray-100']) }}>
@@ -51,7 +49,7 @@
         @endisset
       </div>
       <a class="mt-auto flex w-full items-center gap-2 rounded-md px-4 py-2 text-gray-400" href="#">
-        <i class="iconify" data-icon="mdi-arrow-up"></i>
+        <x-icon name="mdi:arrow-up"/>
         Back to the top
       </a>
     </aside>
