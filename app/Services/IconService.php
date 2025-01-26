@@ -49,6 +49,6 @@ class IconService
 
         $icon = $this->getAlias($set, $icon); // Refresh the alias
 
-        return $response['icons'][$alias ?? $icon] ?? throw new Exception("Icon not found: $set:$icon.");
+        return $this->iconSets[$set]['icons'][$alias ?? $icon] ?? throw new Exception("Icon not found: $set:$icon.");
     }
 }
