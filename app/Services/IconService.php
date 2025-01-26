@@ -25,6 +25,11 @@ class IconService
             $this->iconSets[$set] = array_merge_recursive($this->iconSets[$set], $response);
         }
 
+        $this->iconSets[$set]['prefix'] = $response['prefix'] ?? $set;
+        $this->iconSets[$set]['lastModified'] = $response['lastModified'] ?? 0;
+        $this->iconSets[$set]['width'] = $response['width'] ?? 24;
+        $this->iconSets[$set]['height'] = $response['height'] ?? 24;
+
         Cache::put("icons.$set", $this->iconSets[$set], now()->addWeek());
     }
 
