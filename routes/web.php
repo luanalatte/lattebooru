@@ -29,5 +29,6 @@ Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function (
     Route::get('_thumb/{hash}', [FileController::class, 'thumb'])->where('hash', '[0-9a-f]+')->name('_thumb');
 });
 
+require __DIR__ . '/webhook.php';
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
