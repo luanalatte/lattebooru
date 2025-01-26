@@ -49,20 +49,15 @@
         @endisset
       </div>
       <a class="mt-auto flex w-full items-center gap-2 rounded-md px-4 py-2 text-gray-400" href="#">
-        <x-icon name="mdi:arrow-up"/>
+        <x-icon name="mdi:arrow-up" />
         Back to the top
       </a>
     </aside>
-    <main class="">
+    <main>
       {{ $slot }}
     </main>
   </div>
-  <footer class="bg-white">
-    <div class="container mx-auto px-4 py-4">
-      <p class="text-center text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus vitae
-        repellat mollitia.</p>
-    </div>
-  </footer>
+  <x-footer class="px-4 py-2" />
 </body>
 
 </html>
