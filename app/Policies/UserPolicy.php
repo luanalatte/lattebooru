@@ -11,7 +11,11 @@ class UserPolicy
      */
     public function create(?User $user): bool
     {
-        return $user !== null && $user->hasPermissionTo('create_user');
+        if ($user === null) {
+            return config('auth.enable_account_creation');
+        }
+
+        return $user->hasPermissionTo('create_user');
     }
 
     /**

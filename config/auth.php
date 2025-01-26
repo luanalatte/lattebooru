@@ -112,4 +112,5 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    'enable_account_creation' => (bool) env('ENABLE_ACCOUNT_CREATION', true),
 ];
