@@ -9,9 +9,14 @@
     <a class="flex items-center gap-1 text-sm" href="#">
       <x-icon name="mdi:reply" /> Reply
     </a>
-    <a class="flex items-center gap-1 text-sm text-red-500" href="#"
-       x-show="comment.author.id === {{ request()->user()?->id }}">
-      <x-icon name="mdi:delete" /> Delete
-    </a>
+    <form action="{{ route('comments.destroy', '') }}" method="post"
+          x-bind:action="`{{ route('comments.destroy', '') }}/${comment.id}`">
+      @csrf
+      @method('delete')
+      <button class="flex items-center gap-1 text-sm text-red-500"
+              x-show="comment.author.id === {{ request()->user()?->id }}">
+        <x-icon name="mdi:delete" /> Delete
+      </button>
+    </form>
   </div>
 </article>

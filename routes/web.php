@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
@@ -21,6 +22,7 @@ Route::post('/posts/{post}/addComment', [PostController::class, 'addComment'])->
 Route::resource('posts', PostController::class)->only('show', 'store', 'destroy');
 Route::resource('users', UserController::class)->only('index', 'show');
 Route::resource('tags', TagController::class)->only('index', 'show');
+Route::resource('comments', CommentController::class)->only('update', 'destroy');
 
 Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function () {
     Route::get('_image/{hash}', [FileController::class, 'image'])->where('hash', '[0-9a-f]+')->name('_image');

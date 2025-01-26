@@ -27,6 +27,8 @@ class RoleSeeder extends Seeder
             'post_update_others',
             'post_edit_tags',
             'tag_create',
+            'comment_create',
+            'comment_delete_others',
             'admin_panel',
         ];
 
@@ -40,6 +42,7 @@ class RoleSeeder extends Seeder
             'post_create',
             'post_edit_tags',
             'tag_create',
+            'comment_create',
         ]);
     }
 }
