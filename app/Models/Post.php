@@ -51,6 +51,11 @@ class Post extends Model
         return Storage::path("thumbs/$this->md5");
     }
 
+    public function getIsAnimatedAttribute()
+    {
+        return $this->ext == 'gif' || $this->ext == 'apng';
+    }
+
     public function toResource()
     {
         return new PostResource($this);
