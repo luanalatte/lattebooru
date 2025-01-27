@@ -47,7 +47,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         User::created(function ($user) {
-            $user->assignRole('user');
+            $user->assignRole('unverified');
         });
 
         Route::bind('post', function ($value) {
