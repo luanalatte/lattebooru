@@ -13,11 +13,11 @@ Route::get('/', HomeController::class);
 
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 
-Route::get('/upload', [PostController::class, 'create'])->name('upload')->middleware('verified');
+Route::get('/upload', [PostController::class, 'create'])->name('upload');
 
-Route::post('/posts/{post}/tags', [PostController::class, 'updateTags'])->name('posts.tags')->middleware('verified');
+Route::post('/posts/{post}/tags', [PostController::class, 'updateTags'])->name('posts.tags');
 Route::post('/posts/{post}/setVisibility', [PostController::class, 'setVisibility'])->name('posts.setVisibility');
-Route::post('/posts/{post}/addComment', [PostController::class, 'addComment'])->name('posts.addComment')->middleware('verified');
+Route::post('/posts/{post}/addComment', [PostController::class, 'addComment'])->name('posts.addComment');
 
 Route::resource('posts', PostController::class)->only('show', 'store', 'destroy');
 Route::resource('users', UserController::class)->only('index', 'show', 'store');

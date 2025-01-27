@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 
@@ -50,7 +51,7 @@ class PostPolicy
 
     public function comment(User $user): bool
     {
-        return true;
+        return $user->can('create', Comment::class);
     }
 
     /**
@@ -74,6 +75,6 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post): bool
     {
-        return $user->hasPermissionTo('post_force_delete');
+        return $post->author->is($user) || $user->hasPermissionTo('post_force_delete');
     }
 }
