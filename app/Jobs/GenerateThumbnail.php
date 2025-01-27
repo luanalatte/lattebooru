@@ -22,6 +22,9 @@ class GenerateThumbnail implements ShouldQueue
         }
 
         $imagick = new Imagick(Storage::path("images/$this->filename"));
+        if (Storage::mimeType("images/$this->filename") == 'image/gif') {
+            $imagick = $imagick->coalesceImages();
+        }
 
         $imagick->setImageFormat(config('upload.thumb.format'));
         $imagick->setCompressionQuality(config('upload.thumb.quality'));
