@@ -26,6 +26,16 @@ class Post extends Model
         'visibility'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($post) {
+            Storage::delete($post->imagePath);
+            Storage::delete($post->thumbnailpath);
+        });
+    }
+
     public function regenerateThumbnail()
     {
         GenerateThumbnail::dispatch($this->md5);
