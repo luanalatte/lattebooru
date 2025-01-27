@@ -87,4 +87,12 @@ class PostPolicy
     {
         return ($post->author->is($user) && $post->trashed()) || $user->hasPermissionTo('post_force_delete');
     }
+
+    /**
+     * Determine whether the user can regenerate the thumbnail.
+     */
+    public function regenerateThumbnail(User $user, Post $post): bool
+    {
+        return $user->hasPermissionTo('regenerate_thumbnails');
+    }
 }

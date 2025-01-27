@@ -40,6 +40,14 @@
               </form>
             @endcan
           @endif
+          @can('regenerateThumbnail', $post)
+            <form action="{{ route('posts.regenerateThumbnail', [$post]) }}" method="post" x-ajax>
+              @csrf
+              <button class="flex items-center gap-1 font-medium text-blue-500" type="submit">
+                <x-icon name="mdi:reload" /> Regenerate thumbnail
+              </button>
+            </form>
+          @endcan
         </x-sidebar-section>
       @endcanany
     </div>

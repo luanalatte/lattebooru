@@ -33,6 +33,7 @@ class RoleSeeder extends Seeder
             'comment_delete_others',
             'admin_panel',
             'user_create',
+            'regenerate_thumbnails',
         ];
 
         foreach ($permissions as $permission) {

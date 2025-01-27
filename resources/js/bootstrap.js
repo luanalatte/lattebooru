@@ -11,5 +11,21 @@ document.addEventListener('DOMContentLoaded', function() {
         el.remove();
     });
 
+    Alpine.directive('ajax', el => {
+        el.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            axios({
+                method: this.method,
+                url: this.action,
+                data: new FormData(this)
+            }).then((response) => {
+              Alpine.store('toast').addToast(response.data?.message ?? 'Success.');
+            }).catch((error) => {
+              Alpine.store('toast').addToast(error.response?.data?.message ?? error.message, "error");
+            });
+        });
+    });
+
     Alpine.start();
 });

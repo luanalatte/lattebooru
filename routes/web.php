@@ -19,6 +19,7 @@ Route::get('/upload', [PostController::class, 'create'])->name('upload');
 Route::post('/posts/{post}/tags', [PostController::class, 'updateTags'])->name('posts.tags');
 Route::post('/posts/{post}/setVisibility', [PostController::class, 'setVisibility'])->name('posts.setVisibility');
 Route::post('/posts/{post}/addComment', [PostController::class, 'addComment'])->name('posts.addComment');
+Route::post('/posts/{post}/regenerateThumbnail', [PostController::class, 'regenerateThumbnail'])->name('posts.regenerateThumbnail');
 
 Route::patch('/posts/{post}/restore', [PostController::class, 'restore'])->name('posts.restore')->withTrashed();
 Route::delete('/posts/{post}/forceDelete', [PostController::class, 'forceDelete'])->name('posts.forceDelete')->withTrashed();

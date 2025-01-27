@@ -180,4 +180,15 @@ class PostController extends Controller
 
         return redirect('/');
     }
+
+    public function regenerateThumbnail(Post $post)
+    {
+        Gate::authorize('regenerateThumbnail', $post);
+
+        $post->regenerateThumbnail();
+
+        return response()->json([
+            'message' => 'Image scheduled for thumbnail regeneration.'
+        ]);
+    }
 }
