@@ -20,7 +20,7 @@ Route::post('/posts/{post}/setVisibility', [PostController::class, 'setVisibilit
 Route::post('/posts/{post}/addComment', [PostController::class, 'addComment'])->name('posts.addComment')->middleware('verified');
 
 Route::resource('posts', PostController::class)->only('show', 'store', 'destroy');
-Route::resource('users', UserController::class)->only('index', 'show');
+Route::resource('users', UserController::class)->only('index', 'show', 'store');
 Route::resource('tags', TagController::class)->only('index', 'show');
 Route::resource('comments', CommentController::class)->only('update', 'destroy');
 

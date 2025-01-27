@@ -13,8 +13,8 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = Role::create(['name' => 'user']);
-        $admin = Role::create(['name' => 'admin']);
+        $user = Role::findOrCreate('user');
+        $admin = Role::findOrCreate('admin');
 
         $permissions = [
             'post_show_hidden',
@@ -30,10 +30,11 @@ class RoleSeeder extends Seeder
             'comment_create',
             'comment_delete_others',
             'admin_panel',
+            'user_create',
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::findOrCreate($permission);
         }
 
         $admin->syncPermissions($permissions);

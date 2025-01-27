@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 
 class UserController extends Controller
 {
@@ -24,5 +25,15 @@ class UserController extends Controller
             'user' => $user,
             'posts' => $posts
         ]);
+    }
+
+    public function store(StoreUserRequest $request)
+    {
+        $user = User::create($request->validated());
+        $user->assignRole('user');
+
+        event(new Registered($user));
+
+        return back()->with('message', 'User created.');
     }
 }

@@ -15,7 +15,7 @@ class UserPolicy
             return config('auth.enable_account_creation');
         }
 
-        return $user->hasPermissionTo('create_user');
+        return $user->hasPermissionTo('user_create');
     }
 
     /**
