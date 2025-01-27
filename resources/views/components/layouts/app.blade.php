@@ -35,7 +35,7 @@
             <a class="text-blue-500 hover:text-blue-700" href="{{ route('login') }}">Login</a>
             @can ('create', \App\Models\User::class)
               <a class="text-blue-500 hover:text-blue-700" href="{{ route('register') }}">Register</a>
-            @endcan`
+            @endcan
           @endauth
         </nav>
       </div>
