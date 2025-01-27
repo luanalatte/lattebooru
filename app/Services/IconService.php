@@ -38,7 +38,7 @@ class IconService
         return $this->iconSets[$set]['aliases'][$icon]['parent'] ?? $icon;
     }
 
-    public function getIcon(string $set, string $icon)
+    public function getIcon(string $set, string $icon): string
     {
         if (!isset($this->iconSets[$set])) {
             $this->iconSets[$set] = Cache::get("icons.$set", []);
@@ -47,13 +47,15 @@ class IconService
         $icon = $this->getAlias($set, $icon);
 
         if (isset($this->iconSets[$set]['icons'][$icon])) {
-            return $this->iconSets[$set]['icons'][$icon];
+            $svg = $this->iconSets[$set]['icons'][$icon]['body'];
+            return is_array($svg) ? implode('\n', $svg) : $svg;
         }
 
         $this->downloadIcon($set, $icon);
 
         $icon = $this->getAlias($set, $icon); // Refresh the alias
 
-        return $this->iconSets[$set]['icons'][$alias ?? $icon] ?? throw new Exception("Icon not found: $set:$icon.");
+        $svg = $this->iconSets[$set]['icons'][$icon]['body'] ?? throw new Exception("Icon not found: $set:$icon.");
+        return is_array($svg) ? implode('', $svg) : $svg;
     }
 }

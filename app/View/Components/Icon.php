@@ -24,13 +24,13 @@ class Icon extends Component
 
     public function render(): View|Closure|string
     {
-        $iconData = app(IconService::class)->getIcon($this->set, $this->icon);
-        if (!$iconData) {
+        $svg = app(IconService::class)->getIcon($this->set, $this->icon);
+        if (!$svg) {
             return '';
         }
 
-        return function () use ($iconData) {
-            return '<svg xmlns="http://www.w3.org/2000/svg" {{ $attributes->merge(["width" => "1em", "height" => "1em", "viewBox" => "0 0 24 24"]) }}>' . $iconData['body'] . '</svg>';
+        return function () use ($svg) {
+            return '<svg xmlns="http://www.w3.org/2000/svg" {{ $attributes->merge(["width" => "1em", "height" => "1em", "viewBox" => "0 0 24 24"]) }}>' . $svg . '</svg>';
         };
     }
 }
