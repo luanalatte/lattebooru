@@ -21,7 +21,7 @@ class RegisterController extends Controller
     public function register(StoreUserRequest $request)
     {
         $user = User::create($request->validated());
-        $user->assignRole('user');
+        $user->assignRole('unverified');
 
         event(new Registered($user));
 

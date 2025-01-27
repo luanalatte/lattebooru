@@ -13,6 +13,7 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
+        $unverified = Role::findOrCreate('unverified');
         $user = Role::findOrCreate('user');
         $admin = Role::findOrCreate('admin');
 
@@ -38,6 +39,9 @@ class RoleSeeder extends Seeder
         }
 
         $admin->syncPermissions($permissions);
+
+        // $unverified->syncPermissions([]);
+
         $user->syncPermissions([
             'post_show_hidden',
             'post_create',

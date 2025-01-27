@@ -17,6 +17,9 @@ class EmailVerificationController extends Controller
     {
         $request->fulfill();
 
+        $request->user()->assignRole('user');
+        $request->user()->save();
+
         return redirect('/')->with('message', 'Email verified!');
     }
 
