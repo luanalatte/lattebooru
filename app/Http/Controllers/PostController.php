@@ -160,6 +160,24 @@ class PostController extends Controller
 
         $post->delete();
 
+        return redirect(route('posts.show', [$post]));
+    }
+
+    public function restore(Post $post)
+    {
+        Gate::authorize('restore', $post);
+
+        $post->restore();
+
+        return redirect(route('posts.show', [$post]));
+    }
+
+    public function forceDelete(Post $post)
+    {
+        Gate::authorize('forceDelete', $post);
+
+        $post->forceDelete();
+
         return redirect('/');
     }
 }

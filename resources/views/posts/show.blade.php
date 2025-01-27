@@ -11,18 +11,35 @@
       </x-sidebar-section>
       @canany(['update', 'delete'], $post)
         <x-sidebar-section title="Actions">
-          @can('update', $post)
-            <x-post.visibility-select :$post />
-          @endcan
-          @can('delete', $post)
-            <form action="{{ route('posts.destroy', [$post]) }}" method="post">
+          @if ($post->trashed())
+            <form action="{{ route('posts.restore', [$post]) }}" method="post">
+              @csrf
+              @method('patch')
+              <button class="flex items-center gap-1 font-medium text-lime-500" type="submit">
+                <x-icon name="mdi:restore" /> Restore
+              </button>
+            </form>
+            <form action="{{ route('posts.forceDelete', [$post]) }}" method="post">
               @csrf
               @method('delete')
               <button class="flex items-center gap-1 font-medium text-red-500" type="submit">
-                <x-icon name="mdi:delete" /> Delete
+                <x-icon name="mdi:delete" /> Permantently delete
               </button>
             </form>
-          @endcan
+          @else
+            @can('update', $post)
+              <x-post.visibility-select :$post />
+            @endcan
+            @can('delete', $post)
+              <form action="{{ route('posts.destroy', [$post]) }}" method="post">
+                @csrf
+                @method('delete')
+                <button class="flex items-center gap-1 font-medium text-red-500" type="submit">
+                  <x-icon name="mdi:delete" /> Delete
+                </button>
+              </form>
+            @endcan
+          @endif
         </x-sidebar-section>
       @endcanany
     </div>

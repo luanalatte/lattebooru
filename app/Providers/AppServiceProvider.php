@@ -2,14 +2,11 @@
 
 namespace App\Providers;
 
-use App\Models\Post;
-use App\Models\Scopes\VisibleScope;
 use App\Models\User;
 use App\Services\IconService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -48,10 +45,6 @@ class AppServiceProvider extends ServiceProvider
 
         User::created(function ($user) {
             $user->assignRole('unverified');
-        });
-
-        Route::bind('post', function ($value) {
-            return Post::withoutGlobalScopes([VisibleScope::class])->findOrFail($value);
         });
 
         Blade::directive('fuzzyDate', function (string $expression) {

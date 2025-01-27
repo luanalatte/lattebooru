@@ -20,6 +20,7 @@ class RoleSeeder extends Seeder
         $permissions = [
             'post_show_hidden',
             'post_show_private',
+            'post_show_trashed',
             'post_list_hidden',
             'post_list_private',
             'post_create',

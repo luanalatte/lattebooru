@@ -13,7 +13,7 @@ class PostPolicy
      */
     public function view(?User $user, Post $post): bool
     {
-        if ($post->is_public) {
+        if ($post->is_public && !$post->trashed()) {
             return true;
         }
 
@@ -25,7 +25,17 @@ class PostPolicy
             return true;
         }
 
-        return ($post->is_hidden && $user->hasPermissionTo('post_show_hidden')) || ($post->is_private && $user->hasPermissionTo('post_show_private'));
+        return $this->viewHidden($user, $post) || $this->viewPrivate($user, $post);
+    }
+
+    protected function viewHidden(User $user, Post $post): bool
+    {
+        return $user->hasPermissionTo('post_show_hidden') && (!$post->trashed() || $user->hasPermissionTo('post_show_trashed'));
+    }
+
+    protected function viewPrivate(User $user, Post $post): bool
+    {
+        return $user->hasPermissionTo('post_show_private') && (!$post->trashed() || $user->hasPermissionTo('post_show_trashed'));
     }
 
     /**
@@ -75,6 +85,6 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post): bool
     {
-        return $post->author->is($user) || $user->hasPermissionTo('post_force_delete');
+        return ($post->author->is($user) && $post->trashed()) || $user->hasPermissionTo('post_force_delete');
     }
 }

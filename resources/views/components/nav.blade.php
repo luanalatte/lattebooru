@@ -5,6 +5,7 @@
   @endcan
   <x-nav-link title="Tags" url="{{ route('tags.index') }}" icon="mdi:tag" />
   <x-nav-link title="Users" url="{{ route('users.index') }}" icon="mdi:account" />
+  <x-nav-link title="Trash" url="{{ route('trash.index') }}" icon="mdi:trash" />
   @can('admin_panel')
     <x-nav-link title="Admin" url="{{ route('admin') }}" icon="mdi:cog" />
   @endcan
