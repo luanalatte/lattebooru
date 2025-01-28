@@ -46,7 +46,13 @@ php artisan migrate
 php artisan db:seed RoleSeeder
 ```
 
-4. Start the server(s)
+4. Create an administrator account.
+
+```bash
+php artisan setup:admin
+```
+
+5. Start the server(s)
 
 Note: A vscode `tasks.json` example file is provided to execute these commands in parallel
 
