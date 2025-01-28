@@ -12,12 +12,12 @@ class UniqueFileHash implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (!$value instanceof UploadedFile) {
-            $fail(trans('upload.bad_file'));
+            $fail(__("There was an error processing your file."));
         }
 
         $hash = md5_file($value->path());
         if (Post::where('md5', $hash)->exists()) {
-            $fail(trans('upload.duplicate'));
+            $fail(__("A post with the same file already exists."));
         }
     }
 }

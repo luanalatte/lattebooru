@@ -11,9 +11,9 @@ enum PostVisibility: int
     public function toString(): string
     {
         return match($this) {
-            self::PUBLIC => trans('post.visibility.public'),
-            self::PRIVATE => trans('post.visibility.private'),
-            self::HIDDEN => trans('post.visibility.hidden')
+            self::PUBLIC => __('Public'),
+            self::PRIVATE => __('Private'),
+            self::HIDDEN => __('Hidden')
         };
     }
 

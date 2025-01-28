@@ -39,7 +39,7 @@ class PostController extends Controller
             $ext = $file->extension();
         } catch (Exception) {
             return back()->withErrors([
-                'upload' => trans('upload.bad_file')
+                'upload' => __("There was an error processing your file.")
             ]);
         }
 
@@ -64,7 +64,7 @@ class PostController extends Controller
             report($e);
 
             return back()->withErrors([
-                'upload' => trans('upload.error')
+                'upload' => __("Couldn't create post.")
             ]);
         }
 
