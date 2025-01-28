@@ -36,6 +36,11 @@ class Post extends Model
         });
     }
 
+    public function getThumbnailUrlAttribute()
+    {
+        return route('_thumb', [$this->md5, 'v=' . $this->updated_at->timestamp]);
+    }
+
     public function regenerateThumbnail()
     {
         GenerateThumbnail::dispatch($this->md5);
