@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\Post;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -31,6 +32,8 @@ class GenerateThumbnail implements ShouldQueue
         $imagick->thumbnailImage(config('upload.thumb.dimensions'), config('upload.thumb.dimensions'), true);
 
         Storage::put('thumbs/' . basename($this->filename), $imagick->getImageBlob());
+
+        Post::where('md5', $this->filename)->touch();
 
         try {
             $imagick->clear();
