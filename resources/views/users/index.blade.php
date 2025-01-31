@@ -1,29 +1,17 @@
 <x-layouts.app title="Users">
-  <section class="rounded-md bg-white px-3 pb-4 pt-2 shadow-sm">
-    <h2 class="mb-2 text-lg">Users</h2>
-    <table class="mb-4">
-      <thead>
-        <tr>
-          <th class="px-2 font-normal">User</th>
-          <th class="px-2 font-normal">Role</th>
-          <th class="px-2 font-normal">Posts</th>
-          <th class="px-2 font-normal">Member since</th>
-          <th class="px-2 font-normal">Last seen</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach ($users as $user)
-          <tr>
-            <td class="px-2"><a class="text-blue-500" href="{{ route('users.show', [$user]) }}">{{ $user->username }}</a></td>
-            <td class="px-2 capitalize">{{ $user->roles->first()->name }}</td>
-            <td class="px-2">{{ $user->posts_count }}</td>
-            <td class="px-2">{{ $user->created_at->toFormattedDateString() }}</td>
-            <td class="px-2">@fuzzyDate($user->last_login_at)</td>
-          </tr>
-        @endforeach
-      </tbody>
-    </table>
+  <x-table.table class="bg-white mb-4" :headers="['User', 'Role', 'Posts', 'Member since', 'Last seen']">
+    @foreach ($users as $user)
+      <tr>
+        <x-table.td>
+          <a class="text-blue-500" href="{{ route('users.show', [$user]) }}">{{ $user->username }}</a>
+        </x-table.td>
+        <x-table.td class="capitalize">{{ $user->roles->first()->name }}</x-table.td>
+        <x-table.td>{{ $user->posts_count }}</x-table.td>
+        <x-table.td>{{ $user->created_at->toFormattedDateString() }}</x-table.td>
+        <x-table.td>@fuzzyDate($user->last_login_at)</x-table.td>
+      </tr>
+    @endforeach
+  </x-table.table>
 
-    {{ $users->links() }}
-  </section>
+  {{ $users->links() }}
 </x-layouts.app>

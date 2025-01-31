@@ -9,8 +9,8 @@ use Illuminate\View\Component;
 
 class Icon extends Component
 {
-    public string $set;
-    public string $icon;
+    protected string $set;
+    protected string $icon;
 
     public function __construct(string $name)
     {
