@@ -1,4 +1,4 @@
-<div x-data="$store.toast">
+<div x-data="$store.toast" class="fixed">
   <template x-teleport="body">
     <div class="fixed bottom-0 right-0 mx-8">
       <template x-for="(toast, id) in toasts" x-bind:key="id">

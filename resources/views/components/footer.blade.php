@@ -1,4 +1,4 @@
-<footer {{ $attributes->class(['bg-white']) }}>
+<footer {{ $attributes }}>
   <div class="container mx-auto">
     <div class="flex justify-between text-gray-600">
       <p>

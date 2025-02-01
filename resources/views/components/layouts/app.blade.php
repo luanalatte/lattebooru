@@ -15,36 +15,15 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body {{ $attributes->except(['title', 'nonav'])->class(['flex min-h-[100vh] flex-col bg-gray-100']) }}>
+<body {{ $attributes->except(['title', 'nonav'])->class(['grid min-h-[100vh] grid-rows-[1fr_auto] bg-gray-100']) }}>
   <x-toast />
-  <header class="bg-white shadow-sm">
-    <div class="container mx-auto px-4 py-2">
-      <div class="flex items-center justify-between gap-3">
-        <div class="flex gap-3">
-          <a href="/">
-            <h1 class="text-2xl font-semibold">{{ config('app.name') }}</h1>
-          </a>
-          <input class="rounded-md border px-2" type="search" placeholder="Search" form="search" name="q"
-                 value="{{ request()->query('q') }}">
-          <form id="search" action="{{ route('search') }}"></form>
-        </div>
-        <nav class="flex gap-4">
-          @auth
-            <a class="text-blue-500 hover:text-blue-700" href="{{ route('logout') }}">Logout</a>
-          @else
-            <a class="text-blue-500 hover:text-blue-700" href="{{ route('login') }}">Login</a>
-            @can ('create', \App\Models\User::class)
-              <a class="text-blue-500 hover:text-blue-700" href="{{ route('register') }}">Register</a>
-            @endcan
-          @endauth
-        </nav>
-      </div>
-    </div>
-  </header>
-  <div class="container mx-auto grid flex-grow grid-cols-[auto_1fr] gap-4 px-4 pb-8 pt-4">
+  <div class="container mx-auto grid grid-cols-[auto_1fr]">
     <aside
-           class="{{ isset($aside) ? $aside->attributes->get('class') : '' }} min-h-100vh flex min-w-[200px] flex-col overflow-clip rounded-md">
-      <div>
+           class="{{ isset($aside) ? $aside->attributes->get('class') : '' }} flex min-w-[200px] flex-col overflow-clip bg-gray-50 pt-2">
+      <a class="mb-3 block w-[200px] px-4" href="/">
+        <h1 class="text-2xl font-medium">{{ config('app.name') }}</h1>
+      </a>
+      <div class="divide-y divide-gray-100">
         @if (!isset($nonav))
           <x-nav />
         @endif
@@ -57,11 +36,32 @@
         Back to the top
       </a>
     </aside>
-    <main>
-      {{ $slot }}
-    </main>
+    <div class="grid grid-rows-[auto_1fr_auto]">
+      <header class="bg-gray-50">
+        <div class="container mx-auto px-4 py-2">
+          <div class="flex items-center justify-between gap-3">
+            <input class="rounded-md border px-2 py-1" type="search" placeholder="Search" form="search" name="q"
+                   value="{{ request()->query('q') }}">
+            <form id="search" action="{{ route('search') }}"></form>
+            <nav class="flex gap-4">
+              @auth
+                <a class="text-blue-500 hover:text-blue-700" href="{{ route('logout') }}">Logout</a>
+              @else
+                <a class="text-blue-500 hover:text-blue-700" href="{{ route('login') }}">Login</a>
+                @can('create', \App\Models\User::class)
+                  <a class="text-blue-500 hover:text-blue-700" href="{{ route('register') }}">Register</a>
+                @endcan
+              @endauth
+            </nav>
+          </div>
+        </div>
+      </header>
+      <main class="px-4 pb-8 pt-4">
+        {{ $slot }}
+      </main>
+      <x-footer class="px-4 py-2" />
+    </div>
   </div>
-  <x-footer class="px-4 py-2" />
 </body>
 
 </html>
