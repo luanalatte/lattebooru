@@ -1,5 +1,5 @@
 <x-layouts.app title="Users">
-  <x-table.table class="bg-white mb-4" :headers="['User', 'Role', 'Posts', 'Member since', 'Last seen']">
+  <x-table.table :headers="['User', 'Role', 'Posts', 'Member since', 'Last seen']">
     @foreach ($users as $user)
       <tr>
         <x-table.td>
@@ -13,5 +13,9 @@
     @endforeach
   </x-table.table>
 
-  {{ $users->links() }}
+  @if ($users->links())
+    <div class="mt-4">
+      {{ $users->links() }}
+    </div>
+  @endif
 </x-layouts.app>

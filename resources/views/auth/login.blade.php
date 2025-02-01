@@ -1,5 +1,5 @@
 <x-layouts.app title="Login">
-  <section class="rounded-md bg-white px-4 pt-2 pb-4 shadow-sm">
+  <section class="bg-gray-50 px-4 pt-2 pb-4 shadow-sm">
     <h2 class="mb-2 text-lg">Login</h2>
     <form action="" method="POST">
       @csrf
