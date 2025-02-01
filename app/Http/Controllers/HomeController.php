@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Settings;
 use App\Http\Resources\TagResource;
 use App\Models\Post;
 use App\Models\Tag;
@@ -11,8 +12,8 @@ class HomeController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $posts = Post::with('tags')->public()->latest()->paginate(24);
-        $popularTags = Tag::popular()->take(12)->get();
+        $posts = Post::with('tags')->public()->latest()->paginate(Settings::POSTS_PAGE_SIZE->get());
+        $popularTags = Tag::popular()->take(Settings::TAGS_TOP_COUNT->get())->get();
 
         return view('home', [
             'posts' => $posts,

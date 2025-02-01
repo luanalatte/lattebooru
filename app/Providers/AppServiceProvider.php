@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Setting;
 use App\Models\User;
 use App\Services\IconService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -50,5 +52,11 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('fuzzyDate', function (string $expression) {
             return "<?php echo App\Helpers\DateHelper::fuzzyDate($expression); ?>";
         });
+
+        $settings = Cache::rememberForever('settings', function () {
+            return Setting::all()->mapWithKeys(fn ($model) => [$model->key => $model->value])->all();
+        });
+
+        config(['settings' => $settings]);
     }
 }
