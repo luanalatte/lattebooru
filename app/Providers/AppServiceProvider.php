@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Setting;
 use App\Models\User;
 use App\Services\IconService;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
@@ -53,10 +54,12 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo App\Helpers\DateHelper::fuzzyDate($expression); ?>";
         });
 
-        $settings = Cache::rememberForever('settings', function () {
-            return Setting::all()->mapWithKeys(fn ($model) => [$model->key => $model->value])->all();
-        });
+        try {
+            $settings = Cache::rememberForever('settings', function () {
+                return Setting::all()->mapWithKeys(fn ($model) => [$model->key => $model->value])->all();
+            });
 
-        config(['settings' => $settings]);
+            config(['settings' => $settings]);
+        } catch (Exception) {}
     }
 }
