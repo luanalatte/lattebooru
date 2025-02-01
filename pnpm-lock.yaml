@@ -11,10 +11,6 @@ importers:
       alpinejs:
         specifier: ^3.14.8
         version: 3.14.8
-    devDependencies:
-      '@shufo/prettier-plugin-blade':
-        specifier: ^1.14.1
-        version: 1.14.1
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.47)
@@ -30,18 +26,22 @@ importers:
       postcss:
         specifier: ^8.4.47
         version: 8.4.47
-      prettier:
-        specifier: ^3.3.3
-        version: 3.3.3
-      prettier-plugin-tailwindcss:
-        specifier: ^0.6.8
-        version: 0.6.8(prettier@3.3.3)
       tailwindcss:
         specifier: ^3.4.13
         version: 3.4.13
       vite:
         specifier: ^5.0
         version: 5.4.8
+    devDependencies:
+      '@shufo/prettier-plugin-blade':
+        specifier: ^1.14.1
+        version: 1.14.1
+      prettier:
+        specifier: ^3.3.3
+        version: 3.3.3
+      prettier-plugin-tailwindcss:
+        specifier: ^0.6.8
+        version: 0.6.8(prettier@3.3.3)
 
 packages:
 
