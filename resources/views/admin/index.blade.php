@@ -1,11 +1,10 @@
 <x-layouts.app>
   <x-notice />
   <div class="grid gap-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-    <section class="h-max bg-gray-50 px-4 pb-4 pt-2 shadow-sm lg:col-span-3">
-      <h2 class="mb-2 text-lg">Site configuration</h2>
+    <section class="bg-neutral-50 pb-4 lg:col-span-3">
       <form action="{{ route('admin.settings.update') }}" method="post" x-data x-ajax>
         @csrf
-        <x-table.table :headers="['Key', 'Value', 'Unit']">
+        <x-table.table :headers="['Setting', 'Value', 'Unit']">
           @foreach (\App\Enums\Settings::cases() as $enum)
             <tr>
               <x-table.td>{{ $enum->title() }}</x-table.td>
@@ -30,17 +29,17 @@
             </tr>
           @endforeach
         </x-table.table>
-        <div class="mt-4 flex justify-end">
+        <div class="mt-2 flex justify-end px-4">
           <button class="btn-lime" type="submit">
             <x-icon name="mdi:check" /> Apply config
           </button>
         </div>
       </form>
     </section>
-    <section class="rounded-md bg-white px-4 py-1 shadow-sm">
+    <section>
       <form action="{{ route('users.store') }}" method="POST">
-        <fieldset class="my-4 w-full rounded-md border p-4">
-          <legend>Create user</legend>
+        <fieldset class="card w-full border p-4">
+          <legend class="px-2 text-lg">Create user</legend>
           @csrf
           <div class="space-y-2">
             <div class="grid columns-2">

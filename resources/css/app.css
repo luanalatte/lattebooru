@@ -27,8 +27,12 @@ img[data-mode="fit"] {
   max-height: calc(100vh - 200px);
 }
 
+.card {
+  @apply bg-neutral-50 px-4 py-2 shadow-sm;
+}
+
 .btn {
-  @apply flex items-center justify-center gap-1 rounded-md px-2 py-1 shadow-sm;
+  @apply flex items-center justify-center gap-1 px-2 py-1 shadow-sm;
 }
 
 .btn-blue {

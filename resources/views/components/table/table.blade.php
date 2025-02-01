@@ -1,5 +1,5 @@
-<div {{ $attributes->class(['rounded-md shadow-sm overflow-x-auto']) }}>
-  <table class="min-w-full bg-gray-50">
+<div {{ $attributes->class(['overflow-x-auto']) }}>
+  <table class="min-w-full">
     <thead class="bg-gray-800 text-white">
       <tr class="uppercase">
         @foreach ($headers as $header)
@@ -7,7 +7,7 @@
         @endforeach
       </tr>
     </thead>
-    <tbody class="divide-y divide-gray-200 font-light">
+    <tbody class="divide-y divide-neutral-200 font-light">
       {{ $slot }}
     </tbody>
   </table>

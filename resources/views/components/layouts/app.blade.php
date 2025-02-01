@@ -15,15 +15,15 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body {{ $attributes->except(['title', 'nonav'])->class(['grid min-h-[100vh] grid-rows-[1fr_auto] bg-gray-100']) }}>
+<body {{ $attributes->except(['title', 'nonav'])->class(['grid min-h-[100vh] grid-rows-[1fr_auto] bg-neutral-100']) }}>
   <x-toast />
   <div class="container mx-auto grid grid-cols-[auto_1fr]">
     <aside
-           class="{{ isset($aside) ? $aside->attributes->get('class') : '' }} flex min-w-[200px] flex-col overflow-clip bg-gray-50 pt-2">
+           class="{{ isset($aside) ? $aside->attributes->get('class') : '' }} flex min-w-[200px] flex-col overflow-clip bg-neutral-50 pt-2">
       <a class="mb-3 block w-[200px] px-4" href="/">
         <h1 class="text-2xl font-medium">{{ config('app.name') }}</h1>
       </a>
-      <div class="divide-y divide-gray-100">
+      <div class="divide-y divide-neutral-100">
         @if (!isset($nonav))
           <x-nav />
         @endif
@@ -37,7 +37,7 @@
       </a>
     </aside>
     <div class="grid grid-rows-[auto_1fr_auto]">
-      <header class="bg-gray-50">
+      <header class="bg-neutral-50">
         <div class="container mx-auto px-4 py-2">
           <div class="flex items-center justify-between gap-3">
             <input class="rounded-md border px-2 py-1" type="search" placeholder="Search" form="search" name="q"
