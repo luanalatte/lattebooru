@@ -1,6 +1,6 @@
 @props(['title', 'cloak' => false])
 
-<section {{ $attributes->class(['space-y-2 px-4 py-3']) }} @if ($cloak) x-cloak @endif>
-  <h2 class="font-medium">{{ $title }}</h2>
+<section {{ $attributes->class(['pb-2 pt-3']) }} @if ($cloak) x-cloak @endif>
+  <h2 class="mb-2 font-medium">{{ $title }}</h2>
   {{ $slot }}
 </section>

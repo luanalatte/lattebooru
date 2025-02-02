@@ -8,14 +8,6 @@
   </x-slot>
   <section>
     <x-notice />
-    <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6">
-      @foreach ($posts as $post)
-        <x-thumbnail :$post />
-      @endforeach
-    </div>
-
-    <div class="mt-4 empty:hidden">
-      {{ $posts->links() }}
-    </div>
+    <x-posts.grid :$posts />
   </section>
 </x-layouts.app>

@@ -6,6 +6,11 @@ use App\Models\User;
 
 class TagPolicy
 {
+    public function index(?User $user): bool
+    {
+        return true;
+    }
+
     /**
      * Determine whether the user can create models.
      */

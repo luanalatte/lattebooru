@@ -2,15 +2,15 @@
   @vite('resources/js/post.js')
 
   <x-slot name="aside">
-    <div class="flex flex-col gap-3">
-      <x-sidebar-section title="Tags" x-show="Object.keys(tags).length > 0" :cloak="$post->tags->isEmpty()">
-        <x-tags.tag-list :tags="$post->tags" />
-      </x-sidebar-section>
-      <x-sidebar-section title="Details">
-        <x-post.post-details :$post />
-      </x-sidebar-section>
-      @canany(['update', 'delete'], $post)
-        <x-sidebar-section title="Actions">
+    <x-sidebar-section title="Tags" x-show="Object.keys(tags).length > 0" :cloak="$post->tags->isEmpty()">
+      <x-tags.tag-list :tags="$post->tags" />
+    </x-sidebar-section>
+    <x-sidebar-section title="Details">
+      <x-post.post-details :$post />
+    </x-sidebar-section>
+    @canany(['update', 'delete'], $post)
+      <x-sidebar-section title="Actions">
+        <div class="flex flex-col gap-2">
           @if ($post->trashed())
             <form action="{{ route('posts.restore', [$post]) }}" method="post">
               @csrf
@@ -48,9 +48,9 @@
               </button>
             </form>
           @endcan
-        </x-sidebar-section>
-      @endcanany
-    </div>
+        </div>
+      </x-sidebar-section>
+    @endcanany
   </x-slot>
   <section class="bg-neutral-50 p-3 shadow-sm">
     <img class="mx-auto" data-mode='fit' x-data="{ fit: true }" loading="lazy" x-on:click="fit = !fit"

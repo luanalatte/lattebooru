@@ -1,14 +1,33 @@
-<nav class="space-y-3 pb-1">
-  <x-nav-link title="Home" url="/" icon="mdi:home" />
-  @can('create', App\Models\Post::class)
-    <x-nav-link title="Upload" url="{{ route('upload') }}" icon="mdi:upload" />
+<nav class="flex gap-4">
+  <a class="link px-1" href="/">
+    <x-icon name="mdi:image" /> Posts
+  </a>
+  @can('index', \App\Models\Tag::class)
+    <a class="link px-1" href="{{ route('tags.index') }}">
+      <x-icon name="mdi:tag" /> Tags
+    </a>
   @endcan
-  <x-nav-link title="Tags" url="{{ route('tags.index') }}" icon="mdi:tag" />
-  <x-nav-link title="Users" url="{{ route('users.index') }}" icon="mdi:account" />
-  @auth
-    <x-nav-link title="Trash" url="{{ route('trash.index') }}" icon="mdi:trash" />
-  @endauth
+  @can('index', \App\Models\User::class)
+    <a class="link px-1" href="{{ route('users.index') }}">
+      <x-icon name="mdi:account" /> Users
+    </a>
+  @endcan
   @can('admin_panel')
-    <x-nav-link title="Admin" url="{{ route('admin') }}" icon="mdi:cog" />
+    <a class="border p-2" href="{{ route('admin') }}" title="Admin">
+      <x-icon name="mdi:crown" />
+    </a>
   @endcan
+  @can('create', \App\Models\Post::class)
+    <a class="border p-2" href="{{ route('upload') }}" title="Upload">
+      <x-icon name="mdi:upload" />
+    </a>
+  @endcan
+  @auth
+    <a class="border p-2" href="{{ route('logout') }}" title="Logout"><x-icon name="mdi:logout" /></a>
+  @else
+    <a class="link" href="{{ route('login') }}">Login</a>
+    @can('create', \App\Models\User::class)
+      <a class="link" href="{{ route('register') }}">Register</a>
+    @endcan
+  @endauth
 </nav>
