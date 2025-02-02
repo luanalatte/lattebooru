@@ -1,5 +1,4 @@
 <x-layouts.app>
-  <x-notice />
   <div class="grid gap-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
     <section class="bg-neutral-50 pb-4 lg:col-span-3">
       <form action="{{ route('admin.settings.update') }}" method="post" x-data x-ajax>

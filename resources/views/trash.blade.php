@@ -1,6 +1,5 @@
 <x-layouts.app>
   <section>
-    <x-notice />
     @if ($posts->isEmpty())
       <section class="card">
         <h2 class="text-lg">Trash is empty. Posts you delete will show up here.</h2>

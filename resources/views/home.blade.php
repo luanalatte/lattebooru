@@ -7,7 +7,6 @@
     @endif
   </x-slot>
   <section>
-    <x-notice />
     <x-posts.grid :$posts />
   </section>
 </x-layouts.app>
