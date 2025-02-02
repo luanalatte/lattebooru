@@ -20,7 +20,7 @@ class FileController extends Controller
         $post = Post::where('md5', $hash)->firstOrFail();
         Gate::authorize('view', $post);
 
-        return Storage::get($path);
+        return response()->file(Storage::path($path));
     }
 
     public function thumb(string $hash)
@@ -35,6 +35,6 @@ class FileController extends Controller
         $post = Post::where('md5', $hash)->firstOrFail();
         Gate::authorize('view', $post);
 
-        return Storage::get($path);
+        return response()->file(Storage::path($path));
     }
 }
