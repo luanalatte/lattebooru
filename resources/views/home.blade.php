@@ -6,7 +6,5 @@
       </x-sidebar-section>
     @endif
   </x-slot>
-  <section>
-    <x-posts.grid :$posts />
-  </section>
+  <x-posts.grid :$posts />
 </x-layouts.app>
