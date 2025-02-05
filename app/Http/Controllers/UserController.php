@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Settings;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -19,7 +20,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $posts = $user->latestPosts()->with('tags')->paginate(12);
+        $posts = $user->latestPosts()->with('tags')->paginate(Settings::POSTS_PAGE_SIZE->get());
 
         return view('users.show', [
             'user' => $user,

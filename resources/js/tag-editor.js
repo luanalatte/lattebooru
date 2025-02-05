@@ -3,10 +3,7 @@ document.addEventListener("alpine:init", () => {
     edit: false,
     message: null,
     tempTags: {},
-    init() {
-      this.edit = false;
-      this.tempTags = Object.fromEntries(this.tags.map((tag) => [tag.name, 1]));
-    },
+    tags: [],
     sanitizeTag(tag) {
       return new String(tag).trim().toLowerCase().replace(/\s/g, "_").replace(/--+/g, "-").replace(/__+/g, "_");
     },
@@ -30,8 +27,14 @@ document.addEventListener("alpine:init", () => {
 
       this.tempTags[tag] = 0;
     },
+    startEditing() {
+      this.edit = true;
+      this.tempTags = Object.fromEntries(this.tags.map((tag) => [tag.name, 1]));
+      this.$refs.taginput.focus();
+    },
     cancelEditing() {
-      this.init();
+      this.edit = false;
+      this.tempTags = {};
     },
     submitTags() {
       return axios
@@ -40,7 +43,7 @@ document.addEventListener("alpine:init", () => {
         })
         .then((response) => {
           this.tags = response.data.tags;
-          this.init();
+          this.cancelEditing();
         })
         .catch((error) => {
           this.$store.toast.addToast(error.response?.data?.message ?? error.message, "error");

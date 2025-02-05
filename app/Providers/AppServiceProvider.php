@@ -54,6 +54,10 @@ class AppServiceProvider extends ServiceProvider
             return "<?php echo App\Helpers\DateHelper::fuzzyDate($expression); ?>";
         });
 
+        Blade::directive('xcloak', function ($condition) {
+            return "<?php echo $condition ? 'x-cloak' : ''; ?>";
+        });
+
         try {
             $settings = Cache::rememberForever('settings', function () {
                 return Setting::all()->mapWithKeys(fn ($model) => [$model->key => $model->value])->all();
