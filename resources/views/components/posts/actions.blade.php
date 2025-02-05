@@ -1,6 +1,6 @@
 @props(['post'])
 
-<x-sidebar-section title="Actions">
+<x-sidebar.section title="Actions">
   <div class="flex flex-col gap-2">
     @if ($post->trashed())
       <form action="{{ route('posts.restore', [$post]) }}" method="post">
@@ -49,4 +49,4 @@
       </form>
     @endcan
   </div>
-</x-sidebar-section>
+</x-sidebar.section>

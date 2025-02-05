@@ -14,25 +14,31 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body {{ $attributes->except('title')->class(['flex min-h-[100vh] bg-neutral-100']) }}>
-  <div class="container mx-auto flex">
-    <aside class="z-20 w-1/4 max-w-[260px] border-r border-neutral-100 bg-white px-6 py-2">
-      <div class="space-y-2 divide-y divide-neutral-100 empty:hidden">
-        <a class="block" href="/">
+  <aside class="fixed z-20 min-h-full min-w-min overflow-clip border-r border-neutral-100 bg-white transition-transform md:w-1/4 md:max-w-[260px] lg:static lg:min-w-0"
+         x-data x-bind:class="$store.sidebar.collapsed ? 'max-lg:-translate-x-full' : ''">
+    <div class="divide-y divide-neutral-100">
+      <div class="flex justify-between gap-3 ps-6">
+        <a class="block py-2" href="/">
           <h1 class="text-2xl font-medium">{{ config('app.name') }}</h1>
         </a>
-        @isset($aside)
-          {{ $aside }}
-        @endisset
+        <button class="px-3 lg:hidden" type="button" x-on:click="$store.sidebar.collapsed = !$store.sidebar.collapsed">
+          <x-icon name="mdi:hamburger-menu" />
+        </button>
       </div>
-    </aside>
-    <div class="grid w-full grid-rows-[auto_1fr_auto]">
-      <x-header />
-      <main class="p-6">
+      @isset($aside)
+        {{ $aside }}
+      @endisset
+    </div>
+  </aside>
+  <div class="grid w-full grid-rows-[auto_1fr_auto]">
+    <x-header />
+    <main class="p-6">
+      <div class="container mx-auto h-full">
         <div class="mb-4 border px-4 py-2 empty:hidden">{{ session('message') }}</div>
         {{ $slot }}
-      </main>
-      <x-footer />
-    </div>
+      </div>
+    </main>
+    <x-footer />
   </div>
   <x-toast />
 </body>

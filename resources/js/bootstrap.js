@@ -8,6 +8,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 document.addEventListener('DOMContentLoaded', function() {
     window.Alpine = Alpine;
 
+    Alpine.store('sidebar', {
+        collapsed: true,
+    });
+
     Alpine.directive('remove', el => {
         el.remove();
     });
