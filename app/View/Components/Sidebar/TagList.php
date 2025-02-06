@@ -9,7 +9,7 @@ use Illuminate\View\Component;
 
 class TagList extends Component
 {
-    public function __construct(public $tags)
+    public function __construct(public $tags, public $title = 'Tags')
     {
         $this->tags = TagResource::collection($this->tags)->toArray(request());
     }

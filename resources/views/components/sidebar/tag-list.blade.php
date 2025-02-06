@@ -1,5 +1,5 @@
 <div x-data="{ tags: @js($tags) }" x-modelable="tags" {{ $attributes }} x-show="Object.keys(tags).length > 0" @xcloak(empty($tags))>
-  <x-sidebar.section title="Tags">
+  <x-sidebar.section title="{{ $title }}">
     <ul x-remove>
       @foreach ($tags as $tag)
         <li class="text-nowrap">
