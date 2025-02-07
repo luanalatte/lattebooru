@@ -1,4 +1,4 @@
-<nav class="flex gap-4">
+<nav {{ $attributes->class(['flex gap-4']) }}>
   <a class="link px-1" href="/">
     <x-icon name="mdi:image" /> Posts
   </a>
@@ -13,17 +13,13 @@
     </a>
   @endcan
   @can('admin_panel')
-    <a class="border p-2" href="{{ route('admin') }}" title="Admin">
-      <x-icon name="mdi:crown" />
-    </a>
+    <x-nav-link href="{{ route('admin') }}" text="Admin" icon="mdi:crown" />
   @endcan
   @can('create', \App\Models\Post::class)
-    <a class="border p-2" href="{{ route('upload') }}" title="Upload">
-      <x-icon name="mdi:upload" />
-    </a>
+    <x-nav-link href="{{ route('upload') }}" text="Upload" icon="mdi:upload" />
   @endcan
   @auth
-    <a class="border p-2" href="{{ route('logout') }}" title="Logout"><x-icon name="mdi:logout" /></a>
+    <x-nav-link href="{{ route('logout') }}" text="Logout" icon="mdi:logout" />
   @else
     <a class="link" href="{{ route('login') }}">Login</a>
     @can('create', \App\Models\User::class)

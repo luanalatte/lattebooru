@@ -6,7 +6,7 @@
       <x-thumbnail :$post />
     @endforeach
   </div>
-  <div class="mt-4 empty:hidden">
+  <div class="mt-6 empty:hidden">
     {{ $posts->links() }}
   </div>
 </section>

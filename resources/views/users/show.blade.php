@@ -1,6 +1,6 @@
 <x-layouts.app title="Profile: {{ $user->username }}">
   <x-slot name="aside">
-    <x-sidebar-section title="{{ $user->username }}">
+    <x-sidebar.section title="{{ $user->username }}">
       <ul class="space-y-1 text-sm">
         <li>
           <span class="font-medium">Joined:</span>
@@ -15,7 +15,7 @@
           <span>{{ $posts->total() }}</span>
         </li>
       </ul>
-    </x-sidebar-section>
+    </x-sidebar.section>
   </x-slot>
 
   <x-posts.grid :$posts />
