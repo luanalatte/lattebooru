@@ -22,7 +22,7 @@ class PostService
         $tags = DB::table('tags')->whereIn('name', $tagNames)->get(['id', 'name', 'deleted_at'])->keyBy->name;
 
         if (Gate::allows('tag_create')) {
-            $newTags = collect($tagNames)->filter(fn ($tag) => !isset($tags[$tag]))->unique()->map(fn ($tag) => ['name' => $tag])->all();
+            $newTags = collect($tagNames)->filter(fn ($tag) => !isset($tags[$tag]))->unique()->map(fn ($tag) => ['name' => $tag, 'created_at' => now()])->all();
             DB::table('tags')->insert($newTags);
 
             $tags = $tags->concat(DB::table('tags')->whereIn('name', $newTags)->get(['id', 'name'])->keyBy->name);
