@@ -54,9 +54,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: "Lattebooru_${{ github.ref_name }}.zip"
-          name: Release ${{ github.ref_name }}
+          name: Latebooru ${{ github.ref_name }}
           body: |
-            ## Release ${{ github.ref_name }}
+            ## Latebooru ${{ github.ref_name }}
 
             ### Installation
             1. Download and extract the release.zip
