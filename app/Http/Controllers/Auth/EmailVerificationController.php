@@ -17,6 +17,7 @@ class EmailVerificationController extends Controller
     {
         $request->fulfill();
 
+        $request->user()->removeRole('unverified');
         $request->user()->assignRole('user');
         $request->user()->save();
 
