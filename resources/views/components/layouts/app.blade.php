@@ -29,7 +29,7 @@
   <div class="grid w-full grid-rows-[auto_1fr_auto]">
     <x-header />
 
-    <main class="p-6">
+    <main class="p-6 max-w-[100vw]">
       <div class="container mx-auto">
         <div class="mb-4 border px-4 py-2 empty:hidden">{{ session('message') }}</div>
         {{ $slot }}

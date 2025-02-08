@@ -1,5 +1,5 @@
 <div {{ $attributes->class(['overflow-x-auto']) }}>
-  <table class="min-w-full">
+  <table class="w-full">
     <thead class="bg-gray-800 text-white">
       <tr class="uppercase">
         @foreach ($headers as $header)
