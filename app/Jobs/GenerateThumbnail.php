@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\Settings;
 use App\Models\Post;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -27,9 +28,11 @@ class GenerateThumbnail implements ShouldQueue
             $imagick = $imagick->coalesceImages();
         }
 
-        $imagick->setImageFormat(config('upload.thumb.format'));
-        $imagick->setCompressionQuality(config('upload.thumb.quality'));
-        $imagick->thumbnailImage(config('upload.thumb.dimensions'), config('upload.thumb.dimensions'), true);
+        $imagick->setImageFormat(Settings::THUMBNAIL_FORMAT->get());
+        $imagick->setCompressionQuality(Settings::THUMBNAIL_QUALITY->get());
+
+        $dimensions = Settings::THUMBNAIL_DIMENSIONS->get();
+        $imagick->thumbnailImage($dimensions, $dimensions, true);
 
         Storage::put('thumbs/' . basename($this->filename), $imagick->getImageBlob());
 

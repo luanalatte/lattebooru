@@ -81,7 +81,7 @@ enum Settings: string
     public function values(): array|null
     {
         return match ($this) {
-            self::THUMBNAIL_FORMAT => ['JPEG', 'PNG'],
+            self::THUMBNAIL_FORMAT => ['WEBP', 'JPEG', 'PNG'],
             default => null
         };
     }
@@ -94,6 +94,7 @@ enum Settings: string
             self::POSTS_PAGE_SIZE => 24,
             self::TAGS_TOP_COUNT => 12,
             self::THUMBNAIL_DIMENSIONS => 250,
+            self::THUMBNAIL_FORMAT => 'WEBP',
             self::THUMBNAIL_QUALITY => 90,
             default => null
         };
@@ -122,6 +123,8 @@ enum Settings: string
     {
         return match ($this) {
             self::POSTS_PAGE_SIZE, self::TAGS_TOP_COUNT => (int) $value,
+            self::THUMBNAIL_QUALITY => (int) $value,
+            self::THUMBNAIL_FORMAT => strtolower($value),
             default => $value
         };
     }
