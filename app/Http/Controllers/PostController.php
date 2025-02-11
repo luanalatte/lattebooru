@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ImageType;
 use App\Enums\PostVisibility;
 use App\Http\Resources\TagResource;
+use App\Models\Image;
 use App\Models\Post;
 use App\Services\PostService;
 use App\Services\TagService;
@@ -47,7 +49,10 @@ class PostController extends Controller
 
         try {
             /** @var Post $post */
-            $post = $request->user()->posts()->create([
+            $post = $request->user()->posts()->make();
+
+            $image = $post->image()->create([
+                'type' => ImageType::IMAGE,
                 'md5' => $hash,
                 'ext' => $ext,
                 'filename' => e($file->getClientOriginalName()),
@@ -55,6 +60,10 @@ class PostController extends Controller
                 'width' => $dimensions[0] ?? null,
                 'height' => $dimensions[1] ?? null,
             ]);
+
+            $post->image_id = $image->id;
+
+            $post->save();
 
             $file->storePubliclyAs('images', $hash);
 

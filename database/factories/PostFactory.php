@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Image;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
@@ -18,14 +18,12 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $image = Image::factory()->create();
+
         return [
             'user_id' => User::factory(),
-            'md5' => fake()->unique()->md5(),
-            'ext' => array_rand(['jpg', 'png', 'gif']),
-            'filename' => Str::random(10),
-            'filesize' => rand(1024, 10485760),
-            'width' => rand(400, 2000),
-            'height' => rand(400, 2000),
+            'image_id' => $image->id,
+            'source' => fake()->imageUrl()
         ];
     }
 

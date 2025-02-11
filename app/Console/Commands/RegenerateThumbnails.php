@@ -15,7 +15,7 @@ class RegenerateThumbnails extends Command
         $count = Post::count();
 
         if ($this->confirm("Are you sure you want to regenerate $count thumbnails?")) {
-            foreach (Post::select('md5')->lazy(100) as $post) {
+            foreach (Post::with('image')->select('id', 'image_id')->lazy(100) as $post) {
                 $post->regenerateThumbnail();
             }
         }

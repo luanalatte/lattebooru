@@ -17,7 +17,7 @@
 
   <section class="bg-neutral-50 p-3 shadow-sm">
     <img class="mx-auto" data-mode='fit' x-data="{ fit: true }" loading="lazy" x-on:click="fit = !fit"
-         x-bind:data-mode="fit ? 'fit' : 'full'" src="{{ route('_image', [$post->md5]) }}" alt="{{ $post->filename }}"
+         x-bind:data-mode="fit ? 'fit' : 'full'" src="{{ route('_image', [$post]) }}" alt="{{ $post->image->filename }}"
          title="{{ $post->filename }}">
     @can('post_edit_tags', $post)
       <section class="mt-4">

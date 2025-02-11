@@ -18,14 +18,14 @@
     </li>
     <li>
       <span class="font-medium">Dimensions:</span>
-      <span>{{ $post->width }}</span>
+      <span>{{ $post->image->width }}</span>
       x
-      <span>{{ $post->height }}</span>
+      <span>{{ $post->image->height }}</span>
     </li>
     <li>
       <span class="font-medium">Size & Format:</span>
-      <span>{{ Number::fileSize($post->filesize) }}</span>
-      <span class="uppercase">{{ $post->ext }}</span>
+      <span>{{ Number::fileSize($post->image->filesize) }}</span>
+      <span class="uppercase">{{ $post->image->ext }}</span>
     </li>
   </ul>
 </x-sidebar.section>

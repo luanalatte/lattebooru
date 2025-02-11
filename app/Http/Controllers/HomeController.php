@@ -11,7 +11,7 @@ class HomeController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $posts = Post::with('tags')->public()->latest()->paginate(Settings::POSTS_PAGE_SIZE->get());
+        $posts = Post::with(['thumbnail', 'tags'])->public()->latest()->paginate(Settings::POSTS_PAGE_SIZE->get());
         $popularTags = Tag::popular()->take(Settings::TAGS_TOP_COUNT->get())->get();
 
         return view('home', [

@@ -8,33 +8,32 @@ use Illuminate\Support\Facades\Storage;
 
 class FileController extends Controller
 {
-    public function image(string $hash)
+    public function image(Post $post)
     {
-        $path = "images/$hash";
-
-        if (!Storage::exists($path)) {
-            $path = public_path('img/image.svg');
-            return response(file_get_contents($path))->header('Content-Type', mime_content_type($path));
-        }
-
-        $post = Post::where('md5', $hash)->firstOrFail();
+        $post->load('author');
         Gate::authorize('view', $post);
 
-        return response()->file(Storage::path($path));
+        $post->load('image');
+
+        if (!Storage::exists($post->image->path)) {
+            return response()->file(public_path('img/thumbnail.svg'));
+        }
+
+        return response()->file(Storage::path($post->image->path));
     }
 
-    public function thumb(string $hash)
+    public function thumb(Post $post)
     {
-        $path = "thumbs/$hash";
+        $post->load('author');
 
-        if (!Storage::exists($path)) {
-            $path = public_path('img/thumbnail.svg');
-            return response(file_get_contents($path))->header('Content-Type', mime_content_type($path));
-        }
-
-        $post = Post::where('md5', $hash)->firstOrFail();
         Gate::authorize('view', $post);
 
-        return response()->file(Storage::path($path));
+        $post->load('thumbnail');
+
+        if (!Storage::exists($post->thumbnail->path)) {
+            return response()->file(public_path('img/thumbnail.svg'));
+        }
+
+        return response()->file(Storage::path($post->thumbnail->path));
     }
 }

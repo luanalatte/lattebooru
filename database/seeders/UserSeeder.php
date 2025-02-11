@@ -7,16 +7,13 @@ use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
+    public function __construct(public $count = 10) {}
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        User::factory()->create([
-            'username' => 'admin',
-            'email' => 'admin@example.com',
-        ])->syncRoles(['admin']);
-
-        User::factory(10)->create();
+        User::factory($this->count)->create();
     }
 }

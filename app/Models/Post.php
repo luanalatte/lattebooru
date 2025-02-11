@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ImageType;
 use App\Http\Resources\PostResource;
 use App\Jobs\GenerateThumbnail;
 use App\Models\Traits\Commentable;
@@ -16,12 +17,6 @@ class Post extends Model
     use HasFactory, SoftDeletes, HasVisibility, Commentable;
 
     protected $fillable = [
-        'md5',
-        'ext',
-        'filename',
-        'filesize',
-        'width',
-        'height',
         'source',
         'visibility'
     ];
@@ -36,24 +31,9 @@ class Post extends Model
         });
     }
 
-    public function getThumbnailUrlAttribute()
-    {
-        return route('_thumb', [$this->md5, 'v=' . $this->updated_at->timestamp]);
-    }
-
     public function regenerateThumbnail()
     {
-        GenerateThumbnail::dispatch($this->md5);
-    }
-
-    public function getImagePathAttribute()
-    {
-        return Storage::path("images/$this->md5");
-    }
-
-    public function getThumbnailPathAttribute()
-    {
-        return Storage::path("thumbs/$this->md5");
+        GenerateThumbnail::dispatch($this->image);
     }
 
     public function getIsAnimatedAttribute()
@@ -64,6 +44,16 @@ class Post extends Model
     public function toResource()
     {
         return new PostResource($this);
+    }
+
+    public function image()
+    {
+        return $this->belongsTo(Image::class, 'image_id');
+    }
+
+    public function thumbnail()
+    {
+        return $this->hasOne(Image::class, 'parent_id', 'image_id')->where('type', ImageType::THUMBNAIL);
     }
 
     public function author()
