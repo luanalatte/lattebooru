@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Post;
+use App\Jobs\GenerateImageSizes;
+use App\Models\Image;
+use Exception;
 use Illuminate\Console\Command;
 
 class RegenerateThumbnails extends Command
@@ -12,11 +14,15 @@ class RegenerateThumbnails extends Command
 
     public function handle()
     {
-        $count = Post::count();
+        $count = Image::whereNull('parent_id')->count();
 
         if ($this->confirm("Are you sure you want to regenerate $count thumbnails?")) {
-            foreach (Post::with('image')->select('id', 'image_id')->lazy(100) as $post) {
-                $post->regenerateThumbnail();
+            foreach (Image::whereNull('parent_id')->lazy(100) as $image) {
+                try {
+                    GenerateImageSizes::dispatch($image);
+                } catch (Exception) {
+                    continue;
+                }
             }
         }
     }

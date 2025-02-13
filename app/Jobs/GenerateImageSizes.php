@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\Enums\ImageType;
 use App\Enums\Settings;
 use App\Models\Image;
-use App\Models\Post;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -14,7 +13,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Imagick;
 
-class GenerateThumbnail implements ShouldQueue
+class GenerateImageSizes implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -25,16 +24,16 @@ class GenerateThumbnail implements ShouldQueue
 
     public function handle(): void
     {
-        $path = 'images/' . $this->image->md5;
-        if (!Storage::fileExists($path)) {
-            $this->delete();
-            return;
+        if ($this->image->parent_id !== null) {
+            throw new Exception("Images with parents shouldn't have children. Instead, generate the new sizes as siblings.");
         }
 
-        $path = Storage::path($path);
+        if (Storage::fileMissing($this->image->path)) {
+            throw new Exception("Image not found.");
+        }
 
-        $imagick = new Imagick($path);
-        if (Storage::mimeType($path) == 'image/gif') {
+        $imagick = new Imagick($this->image->fullPath);
+        if ($this->image->isAnimated) {
             $imagick = $imagick->coalesceImages();
         }
 
@@ -44,23 +43,19 @@ class GenerateThumbnail implements ShouldQueue
         $dimensions = Settings::THUMBNAIL_DIMENSIONS->get();
         $imagick->thumbnailImage($dimensions, $dimensions, true);
 
-        if (($thumbnail = $this->image->thumbnail) === null) {
-            $thumbnail = $this->image->thumbnail()->make();
-        }
-
-        $thumbnail->fill([
-            'type' => ImageType::THUMBNAIL,
+        $thumbnail = $this->image->variants()->updateOrCreate([
+            'type' => ImageType::THUMBNAIL
+        ], [
             'ext' => strtolower($imagick->getImageFormat()),
             'md5' => md5($imagick->getImageBlob()),
             'filesize' => strlen($imagick->getImageBlob()),
             'width' => $dimensions,
-            'height' => $dimensions,
+            'height' => $dimensions
         ]);
 
-        Storage::put('thumbs/' . $thumbnail->md5, $imagick->getImageBlob());
+        Storage::put($thumbnail->path, $imagick->getImageBlob());
 
         $thumbnail->save();
-        Post::where('image_id', $this->image->id)->touch();
 
         try {
             $imagick->clear();

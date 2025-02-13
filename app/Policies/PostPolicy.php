@@ -21,7 +21,7 @@ class PostPolicy
             return false;
         }
 
-        if ($post->author->is($user)) {
+        if ($post->user_id === $user->id) {
             return true;
         }
 

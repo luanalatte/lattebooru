@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ImageType;
 use App\Enums\PostVisibility;
 use App\Http\Resources\TagResource;
+use App\Jobs\GenerateImageSizes;
 use App\Models\Image;
 use App\Models\Post;
 use App\Services\PostService;
@@ -77,7 +78,7 @@ class PostController extends Controller
             ]);
         }
 
-        $post->regenerateThumbnail();
+        GenerateImageSizes::dispatch($image);
 
         return redirect(route('posts.show', [$post]));
     }
@@ -192,9 +193,11 @@ class PostController extends Controller
 
     public function regenerateThumbnail(Post $post)
     {
+        $post->load('image');
+
         Gate::authorize('regenerateThumbnail', $post);
 
-        $post->regenerateThumbnail();
+        GenerateImageSizes::dispatch($post->image);
 
         return response()->json([
             'message' => 'Image scheduled for thumbnail regeneration.'

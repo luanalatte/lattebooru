@@ -3,7 +3,7 @@
 
   <script>
     document.addEventListener('alpine:init', () => {
-        Alpine.store('post', @js($post->toResource()))
+        Alpine.store('post', @js(new \App\Http\Resources\PostResource($post)))
     });
   </script>
 

@@ -42,25 +42,40 @@ class Image extends Model
 
     public function getUrlAttribute()
     {
-        return match ($this->type) {
-            ImageType::THUMBNAIL => route('_thumb', [$this->md5]),
-            default => route('_image', [$this->md5])
-        };
+        return route('_image', [$this, $this->updated_at->timestamp]);
     }
 
-    public function getDirectoryPathAttribute()
+    public function getPathAttribute()
     {
         return match ($this->type) {
             ImageType::IMAGE => 'images/',
             ImageType::THUMBNAIL => 'thumbs/',
             ImageType::IMAGE_PREVIEW => 'previews/',
-            default => 'files/'
+            default => 'images/'
+        } . $this->md5;
+    }
+
+    public function getFullPathAttribute()
+    {
+        return Storage::path($this->path);
+    }
+
+    public function getMimeTypeAttribute()
+    {
+        return Storage::mimeType($this->path);
+    }
+
+    public function getIsAnimatedAttribute()
+    {
+        return match($this->mimeType) {
+            'image/gif', 'image/apng' => true,
+            default => false,
         };
     }
 
-    public function getPathAttribute()
+    public function posts()
     {
-        return $this->directoryPath . $this->md5;
+        return $this->hasMany(Post::class, 'image_id');
     }
 
     public function parent()
@@ -73,13 +88,13 @@ class Image extends Model
         return $this->hasMany(Image::class, 'parent_id');
     }
 
-    public function thumbnail(): HasOne
-    {
-        return $this->variants()->where('type', ImageType::THUMBNAIL)->one()->ofMany();
-    }
-
     public function preview(): HasOne
     {
         return $this->variants()->where('type', ImageType::IMAGE_PREVIEW)->one()->ofMany();
+    }
+
+    public function thumbnail(): HasOne
+    {
+        return $this->variants()->where('type', ImageType::THUMBNAIL)->one()->ofMany();
     }
 }
