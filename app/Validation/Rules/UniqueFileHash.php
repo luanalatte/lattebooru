@@ -16,7 +16,7 @@ class UniqueFileHash implements ValidationRule
         }
 
         $hash = md5_file($value->path());
-        if (Post::where('md5', $hash)->exists()) {
+        if (Post::whereRelation('md5', $hash)->exists()) {
             $fail(__("A post with the same file already exists."));
         }
     }
