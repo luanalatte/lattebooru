@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Intervention\Image\ImageManager;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +34,10 @@ class AppServiceProvider extends ServiceProvider
         if (app()->isLocal()) {
             Model::preventLazyLoading();
         }
+
+        $this->app->bind(ImageManager::class, function ($app) {
+            return ImageManager::imagick();
+        });
 
         Relation::morphMap([
             'post' => 'App\Models\Post',
