@@ -78,49 +78,49 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::transaction(function () {
-            Schema::table('posts', function (Blueprint $table) {
-                $table->char('md5', 32)->nullable()->unique();
-                $table->char('ext', 4)->nullable();
-                $table->string('filename')->nullable();
-                $table->unsignedInteger('filesize')->nullable();
-                $table->unsignedSmallInteger('width')->nullable();
-                $table->unsignedSmallInteger('height')->nullable();
-            });
-
-            $query = DB::table('images')
-                ->join('posts', 'posts.image_id', '=', 'images.id')
-                ->select([
-                    'posts.id',
-                    'images.md5',
-                    'images.ext',
-                    'images.filename',
-                    'images.filesize',
-                    'images.width',
-                    'images.height'
-                ])->orderBy('images.id');
-
-            foreach ($query->lazy(1000) as $image) {
-                DB::table('posts')->where('id', $image->id)->update([
-                    'md5' => $image->md5,
-                    'ext' => $image->ext,
-                    'filename' => $image->filename,
-                    'filesize' => $image->filesize,
-                    'width' => $image->width,
-                    'height' => $image->height
-                ]);
-            }
-
-            Schema::table('posts', function (Blueprint $table) {
-                $table->char('md5', 32)->nullable(false)->unique()->change();
-                $table->char('ext', 4)->nullable(false)->change();
-                $table->string('filename')->nullable(false)->change();
-                $table->unsignedInteger('filesize')->nullable(false)->change();
-
-                $table->dropConstrainedForeignId('image_id');
-            });
-
-            Schema::dropIfExists('images');
+        Schema::table('posts', function (Blueprint $table) {
+            $table->char('md5', 32)->nullable()->unique();
+            $table->char('ext', 4)->nullable();
+            $table->string('filename')->nullable();
+            $table->unsignedInteger('filesize')->nullable();
+            $table->unsignedSmallInteger('width')->nullable();
+            $table->unsignedSmallInteger('height')->nullable();
         });
+
+        $query = DB::table('images')
+            ->join('posts', 'posts.image_id', '=', 'images.id')
+            ->select([
+                'posts.id',
+                'images.md5',
+                'images.ext',
+                'images.filename',
+                'images.filesize',
+                'images.width',
+                'images.height'
+            ])->orderBy('images.id');
+
+        foreach ($query->lazy(1000) as $image) {
+            DB::table('posts')->where('id', $image->id)->update([
+                'md5' => $image->md5,
+                'ext' => $image->ext,
+                'filename' => $image->filename,
+                'filesize' => $image->filesize,
+                'width' => $image->width,
+                'height' => $image->height
+            ]);
+        }
+
+        Schema::table('posts', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('image_id');
+        });
+
+        Schema::table('posts', function (Blueprint $table) {
+            $table->char('md5', 32)->nullable(false)->change();
+            $table->char('ext', 4)->nullable(false)->change();
+            $table->string('filename')->nullable(false)->change();
+            $table->unsignedInteger('filesize')->nullable(false)->change();
+        });
+
+        Schema::dropIfExists('images');
     }
 };
