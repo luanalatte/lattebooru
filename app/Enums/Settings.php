@@ -17,6 +17,10 @@ enum Settings: string
     case THUMBNAIL_FORMAT = 'thumbnail_format';
     case THUMBNAIL_QUALITY = 'thumbnail_quality';
 
+    case PREVIEW_DIMENSIONS = 'preview_dimensions';
+    case PREVIEW_FORMAT = 'preview_format';
+    case PREVIEW_QUALITY = 'preview_quality';
+
     public function title(): string
     {
         return match ($this) {
@@ -27,6 +31,9 @@ enum Settings: string
             self::THUMBNAIL_DIMENSIONS => 'Thumbnail dimensions',
             self::THUMBNAIL_FORMAT => 'Thumbnail format',
             self::THUMBNAIL_QUALITY => 'Thumbnail quality',
+            self::PREVIEW_DIMENSIONS => 'Preview dimensions',
+            self::PREVIEW_FORMAT => 'Preview format',
+            self::PREVIEW_QUALITY => 'Preview quality',
             default => $this->value
         };
     }
@@ -36,6 +43,7 @@ enum Settings: string
         return match ($this) {
             self::TAGS_TOP_COUNT => 'How many tags to show on the top tag lists.',
             self::THUMBNAIL_QUALITY => 'Applies only to lossy compression formats (jpeg, webp).',
+            self::PREVIEW_QUALITY => 'Applies only to lossy compression formats (jpeg, webp).',
             default => null,
         };
     }
@@ -53,12 +61,12 @@ enum Settings: string
                 'min' => 1,
                 'step' => 1,
             ],
-            self::THUMBNAIL_DIMENSIONS, self::MAX_UPLOAD_DIMENSIONS => [
+            self::THUMBNAIL_DIMENSIONS, self::PREVIEW_DIMENSIONS, self::MAX_UPLOAD_DIMENSIONS => [
                 'type' => 'number',
                 'min' => 1,
                 'step' => 1,
             ],
-            self::THUMBNAIL_QUALITY => [
+            self::THUMBNAIL_QUALITY, self::PREVIEW_QUALITY => [
                 'type' => 'number',
                 'min' => 1,
                 'max' => 100,
@@ -73,7 +81,7 @@ enum Settings: string
     public function inputType(): string
     {
         return match ($this) {
-            self::THUMBNAIL_FORMAT => 'select',
+            self::THUMBNAIL_FORMAT, self::PREVIEW_FORMAT => 'select',
             default => 'input'
         };
     }
@@ -81,7 +89,7 @@ enum Settings: string
     public function values(): array|null
     {
         return match ($this) {
-            self::THUMBNAIL_FORMAT => ['WEBP', 'JPEG', 'PNG'],
+            self::THUMBNAIL_FORMAT, self::PREVIEW_FORMAT => ['WEBP', 'JPEG', 'PNG'],
             default => null
         };
     }
@@ -93,9 +101,12 @@ enum Settings: string
             self::MAX_UPLOAD_DIMENSIONS => 4000,
             self::POSTS_PAGE_SIZE => 24,
             self::TAGS_TOP_COUNT => 12,
-            self::THUMBNAIL_DIMENSIONS => 250,
+            self::THUMBNAIL_DIMENSIONS => 200,
             self::THUMBNAIL_FORMAT => 'WEBP',
             self::THUMBNAIL_QUALITY => 90,
+            self::PREVIEW_DIMENSIONS => 1200,
+            self::PREVIEW_FORMAT => 'WEBP',
+            self::PREVIEW_QUALITY => 90,
             default => null
         };
     }
@@ -104,10 +115,10 @@ enum Settings: string
     {
         return match ($this) {
             self::MAX_UPLOAD_SIZE => 'MB',
-            self::MAX_UPLOAD_DIMENSIONS, self::THUMBNAIL_DIMENSIONS => 'px',
+            self::MAX_UPLOAD_DIMENSIONS, self::THUMBNAIL_DIMENSIONS, self::PREVIEW_DIMENSIONS => 'px',
             self::POSTS_PAGE_SIZE => 'posts',
             self::TAGS_TOP_COUNT => 'tags',
-            self::THUMBNAIL_QUALITY => '%',
+            self::THUMBNAIL_QUALITY, self::PREVIEW_QUALITY => '%',
             default => null
         };
     }
@@ -125,6 +136,8 @@ enum Settings: string
             self::POSTS_PAGE_SIZE, self::TAGS_TOP_COUNT => (int) $value,
             self::THUMBNAIL_QUALITY => (int) $value,
             self::THUMBNAIL_FORMAT => strtolower($value),
+            self::PREVIEW_QUALITY => (int) $value,
+            self::PREVIEW_FORMAT => strtolower($value),
             default => $value
         };
     }

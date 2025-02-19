@@ -3,12 +3,12 @@
 namespace App\Jobs;
 
 use App\Enums\Settings;
-use Exception;
+use App\Models\Post;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
-use Imagick;
+use Intervention\Image\ImageManager;
 
 class GenerateImageSizes implements ShouldQueue
 {
@@ -18,49 +18,39 @@ class GenerateImageSizes implements ShouldQueue
         public string $path
     ) {}
 
-    public function handle(): void
+    public function handle(ImageManager $imageManager): void
     {
         if (Storage::fileMissing($this->path)) {
-            throw new Exception("Image not found.");
+            logger()->warning('Image not found.', [$this->path]);
+            $this->fail("Image not found.");
         }
 
-        $imagick = new Imagick(Storage::path($this->path));
-        if (Storage::mimeType($this->path) == 'image/gif') {
-            $imagick = $imagick->coalesceImages();
-        }
+        logger('Generating image sizes', [$this->path]);
 
-        $imagick->setImageFormat(Settings::THUMBNAIL_FORMAT->get());
-        $imagick->setCompressionQuality(Settings::THUMBNAIL_QUALITY->get());
-
+        $format = Settings::THUMBNAIL_FORMAT->get();
+        $quality = Settings::THUMBNAIL_QUALITY->get();
         $dimensions = Settings::THUMBNAIL_DIMENSIONS->get();
-        $imagick->thumbnailImage($dimensions, $dimensions, true);
 
-        Storage::put('thumbs/' . basename($this->path), $imagick->getImageBlob());
+        $image = $imageManager->read(Storage::path($this->path));
+        $image->scaleDown($dimensions, $dimensions);
 
-        try {
-            $imagick->clear();
-            $imagick->destroy();
-        } catch (Exception $e) {
-            report($e);
-        }
+        Storage::put(
+            'thumbs/' . basename($this->path),
+            $image->encodeByExtension($format, quality: $quality)
+        );
 
-        $imagick = new Imagick(Storage::path($this->path));
-        if (Storage::mimeType($this->path) == 'image/gif') {
-            $imagick = $imagick->coalesceImages();
-        }
+        $format = Settings::PREVIEW_FORMAT->get();
+        $quality = Settings::PREVIEW_QUALITY->get();
+        $dimensions = Settings::PREVIEW_DIMENSIONS->get();
 
-        $imagick->setImageFormat('webp');
-        $imagick->setCompressionQuality(90);
+        $image = $imageManager->read(Storage::path($this->path));
+        $image->scaleDown($dimensions, $dimensions);
 
-        $imagick->thumbnailImage(1000, 1000, true);
+        Storage::put(
+            'previews/' . basename($this->path),
+            $image->encodeByExtension($format, quality: $quality)
+        );
 
-        Storage::put('previews/' . basename($this->path), $imagick->getImageBlob());
-
-        try {
-            $imagick->clear();
-            $imagick->destroy();
-        } catch (Exception $e) {
-            report($e);
-        }
+        Post::where('md5', md5_file(Storage::path($this->path)))->touch();
     }
 }
