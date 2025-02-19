@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Enums\ImageType;
 use App\Models\Traits\Commentable;
 use App\Models\Traits\HasVisibility;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
@@ -15,22 +15,67 @@ class Post extends Model
 
     protected $fillable = [
         'source',
-        'visibility'
+        'visibility',
+        'md5',
+        'ext',
+        'filename',
+        'filesize',
+        'width',
+        'height',
     ];
 
-    public function image()
+    protected static function boot()
     {
-        return $this->belongsTo(Image::class, 'image_id');
+        parent::boot();
+
+        static::forceDeleting(function ($post) {
+            Storage::delete($post->imagePath);
+            Storage::delete($post->thumbnailPath);
+            Storage::delete($post->previewPath);
+        });
     }
 
-    public function preview()
+    public function getMimeTypeAttribute()
     {
-        return $this->hasOne(Image::class, 'parent_id', 'image_id')->where('type', ImageType::IMAGE_PREVIEW);
+        return Storage::mimeType($this->imagePath);
     }
 
-    public function thumbnail()
+    public function getIsAnimatedAttribute()
     {
-        return $this->hasOne(Image::class, 'parent_id', 'image_id')->where('type', ImageType::THUMBNAIL);
+        return match($this->mimeType) {
+            'image/gif', 'image/apng' => true,
+            default => false,
+        };
+    }
+
+    public function getImagePathAttribute()
+    {
+        return "images/$this->md5";
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return route('_image', ['size' => 'full', 'post' => $this, 't' => $this->updated_at->timestamp]);
+    }
+
+    public function getThumbnailPathAttribute()
+    {
+        return "thumbs/$this->md5";
+    }
+
+    public function getThumbnailUrlAttribute()
+    {
+        return route('_image', ['size' => 'thumb', 'post' => $this, 't' => $this->updated_at->timestamp]);
+    }
+
+    public function getPreviewPathAttribute()
+    {
+        return "previews/$this->md5";
+    }
+
+    public function getPreviewUrlAttribute()
+    {
+        return route('_image', ['size' => 'preview', 'post' => $this, 't' => $this->updated_at->timestamp]);
     }
 
     public function author()

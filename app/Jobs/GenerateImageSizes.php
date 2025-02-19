@@ -2,13 +2,10 @@
 
 namespace App\Jobs;
 
-use App\Enums\ImageType;
 use App\Enums\Settings;
-use App\Models\Image;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\Attributes\WithoutRelations;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Imagick;
@@ -18,22 +15,17 @@ class GenerateImageSizes implements ShouldQueue
     use Queueable, SerializesModels;
 
     public function __construct(
-        #[WithoutRelations]
-        public Image $image
+        public string $path
     ) {}
 
     public function handle(): void
     {
-        if ($this->image->parent_id !== null) {
-            throw new Exception("Images with parents shouldn't have children. Instead, generate the new sizes as siblings.");
-        }
-
-        if (Storage::fileMissing($this->image->path)) {
+        if (Storage::fileMissing($this->path)) {
             throw new Exception("Image not found.");
         }
 
-        $imagick = new Imagick($this->image->fullPath);
-        if ($this->image->isAnimated) {
+        $imagick = new Imagick(Storage::path($this->path));
+        if (Storage::mimeType($this->path) == 'image/gif') {
             $imagick = $imagick->coalesceImages();
         }
 
@@ -43,26 +35,32 @@ class GenerateImageSizes implements ShouldQueue
         $dimensions = Settings::THUMBNAIL_DIMENSIONS->get();
         $imagick->thumbnailImage($dimensions, $dimensions, true);
 
-        $thumbnail = $this->image->variants()->updateOrCreate([
-            'type' => ImageType::THUMBNAIL
-        ], [
-            'ext' => strtolower($imagick->getImageFormat()),
-            'md5' => md5($imagick->getImageBlob()),
-            'filesize' => strlen($imagick->getImageBlob()),
-            'width' => $dimensions,
-            'height' => $dimensions
-        ]);
-
-        Storage::put($thumbnail->path, $imagick->getImageBlob());
-
-        $thumbnail->save();
+        Storage::put('thumbs/' . basename($this->path), $imagick->getImageBlob());
 
         try {
             $imagick->clear();
             $imagick->destroy();
         } catch (Exception $e) {
             report($e);
-            return;
+        }
+
+        $imagick = new Imagick(Storage::path($this->path));
+        if (Storage::mimeType($this->path) == 'image/gif') {
+            $imagick = $imagick->coalesceImages();
+        }
+
+        $imagick->setImageFormat('webp');
+        $imagick->setCompressionQuality(90);
+
+        $imagick->thumbnailImage(1000, 1000, true);
+
+        Storage::put('previews/' . basename($this->path), $imagick->getImageBlob());
+
+        try {
+            $imagick->clear();
+            $imagick->destroy();
+        } catch (Exception $e) {
+            report($e);
         }
     }
 }

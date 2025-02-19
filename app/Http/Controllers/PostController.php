@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ImageType;
 use App\Enums\PostVisibility;
 use App\Http\Resources\TagResource;
 use App\Jobs\GenerateImageSizes;
-use App\Models\Image;
 use App\Models\Post;
 use App\Services\PostService;
 use App\Services\TagService;
@@ -50,10 +48,7 @@ class PostController extends Controller
 
         try {
             /** @var Post $post */
-            $post = $request->user()->posts()->make();
-
-            $image = $post->image()->create([
-                'type' => ImageType::IMAGE,
+            $post = $request->user()->posts()->make([
                 'md5' => $hash,
                 'ext' => $ext,
                 'filename' => e($file->getClientOriginalName()),
@@ -61,8 +56,6 @@ class PostController extends Controller
                 'width' => $dimensions[0] ?? null,
                 'height' => $dimensions[1] ?? null,
             ]);
-
-            $post->image_id = $image->id;
 
             $post->save();
 
@@ -78,7 +71,7 @@ class PostController extends Controller
             ]);
         }
 
-        GenerateImageSizes::dispatch($image);
+        GenerateImageSizes::dispatch($post->imagePath);
 
         return redirect(route('posts.show', [$post]));
     }
@@ -193,11 +186,9 @@ class PostController extends Controller
 
     public function regenerateThumbnail(Post $post)
     {
-        $post->load('image');
-
         Gate::authorize('regenerateThumbnail', $post);
 
-        GenerateImageSizes::dispatch($post->image);
+        GenerateImageSizes::dispatch($post->imagePath);
 
         return response()->json([
             'message' => 'Image scheduled for thumbnail regeneration.'

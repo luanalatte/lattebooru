@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $posts = $user->latestPosts()->with(['thumbnail', 'tags'])->paginate(Settings::POSTS_PAGE_SIZE->get());
+        $posts = $user->latestPosts()->with(['tags'])->paginate(Settings::POSTS_PAGE_SIZE->get());
 
         return view('users.show', [
             'user' => $user,

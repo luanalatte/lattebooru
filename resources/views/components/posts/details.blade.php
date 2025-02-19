@@ -18,14 +18,17 @@
     </li>
     <li>
       <span class="font-medium">Dimensions:</span>
-      <span>{{ $post->image->width }}</span>
+      <span>{{ $post->width }}</span>
       x
-      <span>{{ $post->image->height }}</span>
+      <span>{{ $post->height }}</span>
     </li>
     <li>
       <span class="font-medium">Size & Format:</span>
-      <span>{{ Number::fileSize($post->image->filesize) }}</span>
-      <span class="uppercase">{{ $post->image->ext }}</span>
+      <span>{{ Number::fileSize($post->filesize) }}</span>
+      <span class="uppercase">{{ $post->ext }}</span>
+    </li>
+    <li>
+      <a class="text-blue-500" href="{{ $post->image_url }}" target="_blank">View original</a>
     </li>
   </ul>
 </x-sidebar.section>

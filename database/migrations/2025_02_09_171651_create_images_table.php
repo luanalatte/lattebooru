@@ -12,65 +12,62 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::transaction(function () {
-
-            Schema::create('images', function (Blueprint $table) {
-                $table->id();
-                $table->unsignedSmallInteger('type')->index();
-                $table->foreignId('parent_id')->nullable()->constrained('images')->cascadeOnDelete();
-                $table->char('md5', 32)->unique()->index();
-                $table->char('ext', 4);
-                $table->string('filename')->nullable();
-                $table->unsignedInteger('filesize');
-                $table->unsignedSmallInteger('width')->nullable();
-                $table->unsignedSmallInteger('height')->nullable();
-                $table->timestamps();
-                $table->softDeletes();
-            });
-
-            Schema::table('posts', function (Blueprint $table) {
-                $table->foreignId('image_id')->nullable()->after('user_id')->constrained('images');
-            });
-
-            DB::table('images')->insertUsing([
-                'type',
-                'md5',
-                'ext',
-                'filename',
-                'filesize',
-                'width',
-                'height',
-                'created_at',
-                'deleted_at',
-            ], DB::table('posts')->select([
-                DB::raw(1),
-                'md5',
-                'ext',
-                'filename',
-                'filesize',
-                'width',
-                'height',
-                'created_at',
-                'deleted_at'
-            ]));
-
-            $query = DB::table('posts')
-                ->join('images', 'posts.md5', '=', 'images.md5')
-                ->select(['posts.id AS post_id', 'images.id AS image_id'])->orderBy('posts.id');
-
-            foreach ($query->lazy(1000) as $post) {
-                DB::table('posts')->where('id', $post->post_id)->update([
-                    'image_id' => $post->image_id
-                ]);
-            }
-
-            Schema::table('posts', function (Blueprint $table) {
-                $table->unsignedBigInteger('image_id')->nullable(false)->change();
-                $table->dropUnique('posts_md5_unique');
-            });
-
-            Schema::dropColumns('posts', ['md5', 'ext', 'filename', 'filesize', 'width', 'height']);
+        Schema::create('images', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedSmallInteger('type')->index();
+            $table->foreignId('parent_id')->nullable()->constrained('images')->cascadeOnDelete();
+            $table->char('md5', 32)->unique()->index();
+            $table->char('ext', 4);
+            $table->string('filename')->nullable();
+            $table->unsignedInteger('filesize');
+            $table->unsignedSmallInteger('width')->nullable();
+            $table->unsignedSmallInteger('height')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
         });
+
+        Schema::table('posts', function (Blueprint $table) {
+            $table->foreignId('image_id')->nullable()->after('user_id')->constrained('images');
+        });
+
+        DB::table('images')->insertUsing([
+            'type',
+            'md5',
+            'ext',
+            'filename',
+            'filesize',
+            'width',
+            'height',
+            'created_at',
+            'deleted_at',
+        ], DB::table('posts')->select([
+            DB::raw(1),
+            'md5',
+            'ext',
+            'filename',
+            'filesize',
+            'width',
+            'height',
+            'created_at',
+            'deleted_at'
+        ]));
+
+        $query = DB::table('posts')
+            ->join('images', 'posts.md5', '=', 'images.md5')
+            ->select(['posts.id AS post_id', 'images.id AS image_id'])->orderBy('posts.id');
+
+        foreach ($query->lazy(1000) as $post) {
+            DB::table('posts')->where('id', $post->post_id)->update([
+                'image_id' => $post->image_id
+            ]);
+        }
+
+        Schema::table('posts', function (Blueprint $table) {
+            $table->unsignedBigInteger('image_id')->nullable(false)->change();
+            $table->dropUnique('posts_md5_unique');
+        });
+
+        Schema::dropColumns('posts', ['md5', 'ext', 'filename', 'filesize', 'width', 'height']);
     }
 
     /**

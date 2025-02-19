@@ -14,7 +14,7 @@ class SearchController extends Controller
 
         $tags = $searchService->parseSearchString($search);
 
-        $query = Post::with(['thumbnail', 'tags']);
+        $query = Post::with(['tags']);
         foreach ($tags['tags'] as $tag) {
             $query->whereRelation('tags', 'name', $tag);
         }

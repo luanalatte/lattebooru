@@ -33,7 +33,7 @@ Route::resource('comments', CommentController::class)->only('update', 'destroy')
 Route::get('/trash', [TrashController::class, 'index'])->middleware('auth')->name('trash.index');
 
 Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function () {
-    Route::get('_image/{image}', [FileController::class, 'image'])->name('_image');
+    Route::get('_image/{size}/{post}', [FileController::class, 'image'])->name('_image');
 });
 
 require __DIR__ . '/auth.php';
