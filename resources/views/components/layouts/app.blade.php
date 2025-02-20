@@ -14,8 +14,8 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body {{ $attributes->except('title')->class(['min-h-[100vh] bg-neutral-100 flex relative']) }}>
-  <aside class="z-20 w-64 max-w-[100vw] overflow-x-clip border-r border-neutral-100 bg-white transition-all max-lg:absolute max-lg:h-full lg:min-h-full"
-         x-data x-bind:class="$store.sidebar.collapsed && 'max-lg:w-0'">
+  <aside class="z-20 w-64 max-w-[100vw] overflow-x-clip border-r border-neutral-100 bg-white transition-all max-lg:absolute max-lg:h-full lg:min-h-full max-lg:hidden"
+         x-data x-init="$el.classList.remove('max-lg:hidden')" x-bind:class="$store.sidebar.collapsed && 'max-lg:w-0'">
     <div class="w-64 divide-y">
       <a class="flex h-12 items-center px-6" href="/">
         <h1 class="text-2xl font-medium">{{ config('app.name') }}</h1>
