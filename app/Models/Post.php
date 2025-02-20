@@ -28,6 +28,11 @@ class Post extends Model
         'image_updated_at' => 'datetime'
     ];
 
+    public $permissions = [
+        'hidden' => 'post_show_hidden',
+        'private' => 'post_show_private',
+    ];
+
     protected static function boot()
     {
         parent::boot();

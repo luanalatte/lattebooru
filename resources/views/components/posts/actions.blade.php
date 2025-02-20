@@ -24,7 +24,7 @@
           @csrf
           <label class="mb-1 block">Visibility</label>
           <select class="w-full border bg-transparent px-4 py-2" name="visibility" x-model="visibility">
-            @foreach (App\Enums\PostVisibility::cases() as $item)
+            @foreach (App\Enums\Visibility::cases() as $item)
               <option value="{{ $item }}">{{ $item->toString() }}</option>
             @endforeach
           </select>

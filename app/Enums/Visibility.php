@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum PostVisibility: int
+enum Visibility: int
 {
     case PUBLIC = 0;
     case PRIVATE = 1;

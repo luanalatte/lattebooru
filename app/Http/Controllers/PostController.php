@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\PostVisibility;
+use App\Enums\Visibility;
 use App\Http\Resources\TagResource;
 use App\Jobs\GenerateImageSizes;
 use App\Models\Post;
@@ -145,10 +145,10 @@ class PostController extends Controller
         Gate::authorize('update', $post);
 
         $request->validate([
-            'visibility' => ['required', Rule::in(PostVisibility::cases())]
+            'visibility' => ['required', Rule::in(Visibility::cases())]
         ]);
 
-        $post->visibility = PostVisibility::from($request->integer('visibility'));
+        $post->visibility = Visibility::from($request->integer('visibility'));
         $post->save();
 
         return response()->json([

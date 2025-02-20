@@ -2,7 +2,7 @@
 
 namespace App\Models\Scopes;
 
-use App\Enums\PostVisibility;
+use App\Enums\Visibility;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -14,30 +14,34 @@ class VisibleScope implements Scope
     public function apply(Builder $builder, Model $model): void
     {
         if (Auth::id()) {
-            /** @var User $user */
-            $user = Auth::user();
+            $visibility = [Visibility::PUBLIC];
 
-            $visibility = [PostVisibility::PUBLIC];
-            if ($user->hasPermissionTo('post_show_hidden')) {
-                $visibility[] = PostVisibility::HIDDEN;
+            if (isset($builder->getModel()?->permissions) && is_array($builder->getModel()->permissions)) {
+                /** @var User $user */
+                $user = Auth::user();
+
+                $showHidden = $model->permissions['hidden'] ?? null;
+                if ($showHidden && $user->hasPermissionTo($showHidden)) {
+                    $visibility[] = Visibility::HIDDEN;
+                }
+
+                $showPrivate = $model->permissions['private'] ?? null;
+                if ($showPrivate && $user->hasPermissionTo($showPrivate)) {
+                    $visibility[] = Visibility::PRIVATE;
+                }
             }
 
-            if ($user->hasPermissionTo('post_show_private')) {
-                $visibility[] = PostVisibility::PRIVATE;
-            }
-
-            if (count($visibility) == 1) {
-                $builder->where(function (Builder $q) use ($visibility) {
-                    $q->where('user_id', Auth::id())->orWhere('visibility', $visibility[0]);
+            if (count($visibility) === 1) {
+                $builder->where(function (Builder $q) {
+                    $q->where('user_id', Auth::id())->orWhere('visibility', Visibility::PUBLIC);
                 });
-            } else {
+            } elseif (count($visibility) !== count(Visibility::cases())) {
                 $builder->where(function (Builder $q) use ($visibility) {
                     $q->where('user_id', Auth::id())->orWhereIn('visibility', $visibility);
                 });
             }
-
         } else {
-            $builder->where('visibility', PostVisibility::PUBLIC);
+            $builder->where('visibility', Visibility::PUBLIC);
         }
     }
 }

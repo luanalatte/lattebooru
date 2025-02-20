@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits;
 
-use App\Enums\PostVisibility;
+use App\Enums\Visibility;
 use App\Models\Scopes\VisibleScope;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -10,7 +10,7 @@ trait HasVisibility
 {
     public function initializeHasVisibility()
     {
-        $this->casts['visibility'] = PostVisibility::class;
+        $this->casts['visibility'] = Visibility::class;
     }
 
     public static function booted()
@@ -20,31 +20,31 @@ trait HasVisibility
 
     public function scopePublic(Builder $query)
     {
-        return $query->withoutGlobalScope(VisibleScope::class)->where('visibility', PostVisibility::PUBLIC);
+        return $query->withoutGlobalScope(VisibleScope::class)->where('visibility', Visibility::PUBLIC);
     }
 
     public function scopePrivate(Builder $query)
     {
-        return $query->withoutGlobalScope(VisibleScope::class)->where('visibility', PostVisibility::PRIVATE);
+        return $query->withoutGlobalScope(VisibleScope::class)->where('visibility', Visibility::PRIVATE);
     }
 
     public function scopeHidden(Builder $query)
     {
-        return $query->withoutGlobalScope(VisibleScope::class)->where('visibility', PostVisibility::HIDDEN);
+        return $query->withoutGlobalScope(VisibleScope::class)->where('visibility', Visibility::HIDDEN);
     }
 
     public function getIsPublicAttribute()
     {
-        return $this->visibility == PostVisibility::PUBLIC;
+        return $this->visibility == Visibility::PUBLIC;
     }
 
     public function getIsPrivateAttribute()
     {
-        return $this->visibility == PostVisibility::PRIVATE;
+        return $this->visibility == Visibility::PRIVATE;
     }
 
     public function getIsHiddenAttribute()
     {
-        return $this->visibility == PostVisibility::HIDDEN;
+        return $this->visibility == Visibility::HIDDEN;
     }
 }
