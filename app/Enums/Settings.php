@@ -51,7 +51,8 @@ enum Settings: string
     public function attributes(): ComponentAttributeBag
     {
         return new ComponentAttributeBag(match ($this) {
-            self::POSTS_PAGE_SIZE, self::TAGS_TOP_COUNT => [
+            self::POSTS_PAGE_SIZE,
+            self::TAGS_TOP_COUNT => [
                 'type' => 'number',
                 'min' => 1,
                 'step' => 1,
@@ -61,12 +62,15 @@ enum Settings: string
                 'min' => 1,
                 'step' => 1,
             ],
-            self::THUMBNAIL_DIMENSIONS, self::PREVIEW_DIMENSIONS, self::MAX_UPLOAD_DIMENSIONS => [
+            self::THUMBNAIL_DIMENSIONS,
+            self::PREVIEW_DIMENSIONS,
+            self::MAX_UPLOAD_DIMENSIONS => [
                 'type' => 'number',
                 'min' => 1,
                 'step' => 1,
             ],
-            self::THUMBNAIL_QUALITY, self::PREVIEW_QUALITY => [
+            self::THUMBNAIL_QUALITY,
+            self::PREVIEW_QUALITY => [
                 'type' => 'number',
                 'min' => 1,
                 'max' => 100,
@@ -81,7 +85,8 @@ enum Settings: string
     public function inputType(): string
     {
         return match ($this) {
-            self::THUMBNAIL_FORMAT, self::PREVIEW_FORMAT => 'select',
+            self::THUMBNAIL_FORMAT,
+            self::PREVIEW_FORMAT => 'select',
             default => 'input'
         };
     }
@@ -89,7 +94,8 @@ enum Settings: string
     public function values(): array|null
     {
         return match ($this) {
-            self::THUMBNAIL_FORMAT, self::PREVIEW_FORMAT => ['WEBP', 'JPEG', 'PNG'],
+            self::THUMBNAIL_FORMAT,
+            self::PREVIEW_FORMAT => ['WEBP', 'JPEG', 'PNG'],
             default => null
         };
     }
@@ -115,10 +121,13 @@ enum Settings: string
     {
         return match ($this) {
             self::MAX_UPLOAD_SIZE => 'MB',
-            self::MAX_UPLOAD_DIMENSIONS, self::THUMBNAIL_DIMENSIONS, self::PREVIEW_DIMENSIONS => 'px',
             self::POSTS_PAGE_SIZE => 'posts',
             self::TAGS_TOP_COUNT => 'tags',
-            self::THUMBNAIL_QUALITY, self::PREVIEW_QUALITY => '%',
+            self::MAX_UPLOAD_DIMENSIONS,
+            self::THUMBNAIL_DIMENSIONS,
+            self::PREVIEW_DIMENSIONS => 'px',
+            self::THUMBNAIL_QUALITY,
+            self::PREVIEW_QUALITY => '%',
             default => null
         };
     }
@@ -126,18 +135,28 @@ enum Settings: string
     public function rules(): array|string
     {
         return match ($this) {
-            self::MAX_UPLOAD_SIZE => ['integer']
+            self::MAX_UPLOAD_SIZE,
+            self::MAX_UPLOAD_DIMENSIONS,
+            self::POSTS_PAGE_SIZE,
+            self::TAGS_TOP_COUNT,
+            self::THUMBNAIL_DIMENSIONS,
+            self::PREVIEW_DIMENSIONS => 'integer|min:1',
+            self::THUMBNAIL_QUALITY,
+            self::PREVIEW_QUALITY => 'integer|min:1|max:100',
+            self::THUMBNAIL_FORMAT,
+            self::PREVIEW_FORMAT => 'string|in:WEBP,JPEG,PNG',
         };
     }
 
     protected function cast($value)
     {
         return match ($this) {
-            self::POSTS_PAGE_SIZE, self::TAGS_TOP_COUNT => (int) $value,
-            self::THUMBNAIL_QUALITY => (int) $value,
-            self::THUMBNAIL_FORMAT => strtolower($value),
+            self::POSTS_PAGE_SIZE,
+            self::TAGS_TOP_COUNT,
+            self::THUMBNAIL_QUALITY,
             self::PREVIEW_QUALITY => (int) $value,
-            self::PREVIEW_FORMAT => strtolower($value),
+            self::THUMBNAIL_FORMAT,
+            self::PREVIEW_FORMAT => strtolower((string) $value),
             default => $value
         };
     }

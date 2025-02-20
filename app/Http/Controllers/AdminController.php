@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -31,13 +32,19 @@ class AdminController extends Controller
             'settings' => [
                 'required',
                 'array:' . implode(',', array_column(Settings::cases(), 'value'))
-            ],
-            'settings.*' => 'string'
-        ]);
+            ]
+        ])['settings'];
+
+        $rules = [];
+        foreach ($validated as $key => $value) {
+            $rules[$key] = Settings::from($key)->rules();
+        }
+
+        $validated = Validator::make($validated, $rules)->validate();
 
         try {
             DB::transaction(function () use ($validated) {
-                foreach ($validated['settings'] as $key => $value) {
+                foreach ($validated as $key => $value) {
                     Setting::updateOrCreate([
                         'key' => $key
                     ], [
