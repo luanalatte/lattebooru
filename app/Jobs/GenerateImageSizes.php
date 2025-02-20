@@ -31,8 +31,10 @@ class GenerateImageSizes implements ShouldQueue
         $quality = Settings::THUMBNAIL_QUALITY->get();
         $dimensions = Settings::THUMBNAIL_DIMENSIONS->get();
 
+        $previewDimensions = Settings::PREVIEW_DIMENSIONS->get();
+
         $image = $imageManager->read(Storage::path($this->path));
-        if ($image->width() <= $dimensions && $image->height() <= $dimensions) {
+        if ($image->width() <= $previewDimensions && $image->height() <= $previewDimensions) {
             $generatePreview = false;
         }
 
@@ -46,10 +48,9 @@ class GenerateImageSizes implements ShouldQueue
         if ($generatePreview ?? true) {
             $format = Settings::PREVIEW_FORMAT->get();
             $quality = Settings::PREVIEW_QUALITY->get();
-            $dimensions = Settings::PREVIEW_DIMENSIONS->get();
 
             $image = $imageManager->read(Storage::path($this->path));
-            $image->scaleDown($dimensions, $dimensions);
+            $image->scaleDown($previewDimensions, $previewDimensions);
 
             Storage::put(
                 'previews/' . basename($this->path),
