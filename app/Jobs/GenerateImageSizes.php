@@ -32,6 +32,10 @@ class GenerateImageSizes implements ShouldQueue
         $dimensions = Settings::THUMBNAIL_DIMENSIONS->get();
 
         $image = $imageManager->read(Storage::path($this->path));
+        if ($image->width() <= $dimensions && $image->height() <= $dimensions) {
+            $generatePreview = false;
+        }
+
         $image->scaleDown($dimensions, $dimensions);
 
         Storage::put(
@@ -39,17 +43,19 @@ class GenerateImageSizes implements ShouldQueue
             $image->encodeByExtension($format, quality: $quality)
         );
 
-        $format = Settings::PREVIEW_FORMAT->get();
-        $quality = Settings::PREVIEW_QUALITY->get();
-        $dimensions = Settings::PREVIEW_DIMENSIONS->get();
+        if ($generatePreview ?? true) {
+            $format = Settings::PREVIEW_FORMAT->get();
+            $quality = Settings::PREVIEW_QUALITY->get();
+            $dimensions = Settings::PREVIEW_DIMENSIONS->get();
 
-        $image = $imageManager->read(Storage::path($this->path));
-        $image->scaleDown($dimensions, $dimensions);
+            $image = $imageManager->read(Storage::path($this->path));
+            $image->scaleDown($dimensions, $dimensions);
 
-        Storage::put(
-            'previews/' . basename($this->path),
-            $image->encodeByExtension($format, quality: $quality)
-        );
+            Storage::put(
+                'previews/' . basename($this->path),
+                $image->encodeByExtension($format, quality: $quality)
+            );
+        }
 
         Post::where('md5', md5_file(Storage::path($this->path)))->touch();
     }

@@ -22,10 +22,26 @@ class FileController extends Controller
 
         Gate::authorize('view', $post);
 
-        return response()->file(Storage::path(match ($size) {
-            'thumb' => $post->thumbnailpath,
-            'preview' => $post->previewPath,
-            default => $post->imagePath
-        }));
+        if ($size == 'thumb') {
+            if (Storage::fileMissing($post->thumbnailPath)) {
+                return response()->file(public_path('img/thumbnail.svg'));
+            }
+
+            return response()->file(Storage::path($post->thumbnailPath));
+        }
+
+        if ($size == 'preview') {
+            if (Storage::fileMissing($post->previewPath)) {
+                return response()->file(public_path('img/image.svg'));
+            }
+
+            return response()->file(Storage::path($post->previewPath));
+        }
+
+        if (Storage::fileMissing($post->imagePath)) {
+            return response()->file(public_path('img/image.svg'));
+        }
+
+        return response()->file(Storage::path($post->imagePath));
     }
 }

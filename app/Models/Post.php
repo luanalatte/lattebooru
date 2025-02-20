@@ -29,9 +29,7 @@ class Post extends Model
         parent::boot();
 
         static::forceDeleting(function ($post) {
-            Storage::delete($post->imagePath);
-            Storage::delete($post->thumbnailPath);
-            Storage::delete($post->previewPath);
+            Storage::delete([$post->imagePath, $post->thumbnailPath, $post->previewPath]);
         });
     }
 
@@ -75,6 +73,10 @@ class Post extends Model
 
     public function getPreviewUrlAttribute()
     {
+        if (Storage::fileMissing($this->previewPath)) {
+            return $this->imageUrl;
+        }
+
         return route('_image', ['size' => 'preview', 'post' => $this, 't' => $this->updated_at->timestamp]);
     }
 
