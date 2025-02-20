@@ -58,6 +58,8 @@ class GenerateImageSizes implements ShouldQueue
             );
         }
 
-        Post::where('md5', md5_file(Storage::path($this->path)))->touch();
+        Post::where('md5', md5_file(Storage::path($this->path)))->update([
+            'image_updated_at' => now()
+        ]);
     }
 }

@@ -30,11 +30,7 @@ class FileController extends Controller
             return response()->file(Storage::path($post->thumbnailPath));
         }
 
-        if ($size == 'preview') {
-            if (Storage::fileMissing($post->previewPath)) {
-                return response()->file(public_path('img/image.svg'));
-            }
-
+        if ($size == 'preview' && Storage::fileExists($post->previewPath)) {
             return response()->file(Storage::path($post->previewPath));
         }
 

@@ -24,6 +24,10 @@ class Post extends Model
         'height',
     ];
 
+    protected $casts = [
+        'image_updated_at' => 'datetime'
+    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -53,7 +57,7 @@ class Post extends Model
 
     public function getImageUrlAttribute()
     {
-        return route('_image', ['size' => 'full', 'post' => $this, 't' => $this->updated_at->timestamp]);
+        return route('_image', ['size' => 'full', 'post' => $this, 't' => $this->image_updated_at?->timestamp]);
     }
 
     public function getThumbnailPathAttribute()
@@ -63,7 +67,7 @@ class Post extends Model
 
     public function getThumbnailUrlAttribute()
     {
-        return route('_image', ['size' => 'thumb', 'post' => $this, 't' => $this->updated_at->timestamp]);
+        return route('_image', ['size' => 'thumb', 'post' => $this, 't' => $this->image_updated_at?->timestamp]);
     }
 
     public function getPreviewPathAttribute()
@@ -73,11 +77,7 @@ class Post extends Model
 
     public function getPreviewUrlAttribute()
     {
-        if (Storage::fileMissing($this->previewPath)) {
-            return $this->imageUrl;
-        }
-
-        return route('_image', ['size' => 'preview', 'post' => $this, 't' => $this->updated_at->timestamp]);
+        return route('_image', ['size' => 'preview', 'post' => $this, 't' => $this->image_updated_at?->timestamp]);
     }
 
     public function author()
