@@ -21,6 +21,4 @@ yarn-error.log
 /.idea
 /.vscode
 /.zed
-.htaccess
-index.php
-deploy.sh
+public_html
