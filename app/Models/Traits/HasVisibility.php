@@ -18,6 +18,11 @@ trait HasVisibility
         static::addGlobalScope(new VisibleScope);
     }
 
+    public function scopeAnyVisibility(Builder $query)
+    {
+        return $query->withoutGlobalScope(VisibleScope::class);
+    }
+
     public function scopePublic(Builder $query)
     {
         return $query->withoutGlobalScope(VisibleScope::class)->where('visibility', Visibility::PUBLIC);

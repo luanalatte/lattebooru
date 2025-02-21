@@ -14,7 +14,7 @@ class RegenerateThumbnails extends Command
 
     public function handle()
     {
-        $count = Post::count();
+        $count = Post::anyVisibility()->count();
 
         if ($this->confirm("Are you sure you want to regenerate $count thumbnails?")) {
             foreach (Post::anyVisibility()->select('md5')->lazy(100) as $post) {
